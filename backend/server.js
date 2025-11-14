@@ -28,10 +28,26 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps, Postman)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    maxAge: 600 // Cache preflight for 10 minutes
   })
 );
+
+// Handle preflight requests for all routes
+app.options('*', cors());
 
 // ✅ Connect to MongoDB
 mongoose

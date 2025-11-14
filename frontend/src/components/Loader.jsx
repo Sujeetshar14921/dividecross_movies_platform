@@ -5,13 +5,13 @@ export default function Loader() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <motion.div
-        className="relative w-20 h-20"
+        className="relative w-16 h-16 sm:w-20 sm:h-20"
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
       >
-        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-red-600 border-r-pink-600"></div>
+        <div className="absolute inset-0 rounded-full border-3 sm:border-4 border-transparent border-t-red-600 border-r-pink-600"></div>
         <motion.div
-          className="absolute inset-2 rounded-full border-4 border-transparent border-b-red-500 border-l-pink-500"
+          className="absolute inset-2 rounded-full border-3 sm:border-4 border-transparent border-b-red-500 border-l-pink-500"
           animate={{ rotate: -360 }}
           transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
         />

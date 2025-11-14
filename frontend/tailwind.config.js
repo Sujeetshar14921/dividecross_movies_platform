@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+      },
       colors: {
         cinebg: "#0F0F0F",
         cineaccent: "#E50914"

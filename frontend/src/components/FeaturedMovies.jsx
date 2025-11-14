@@ -43,54 +43,54 @@ export default function FeaturedMovies({
   }, [recentMovies]);
   
   return (
-    <div className="container mx-auto px-6 py-8">
+    <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
       {/* Category Tabs */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setActiveCategory("featured")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-bold transition-all ${
               activeCategory === "featured"
                 ? "bg-gradient-to-r from-red-600 to-pink-600 text-white shadow-lg shadow-red-500/50"
                 : "bg-white/5 text-gray-400 hover:bg-white/10"
             }`}
           >
-            <FaFire className={activeCategory === "featured" ? "text-white" : "text-red-500"} />
-            Featured
+            <FaFire className={`text-sm sm:text-base ${activeCategory === "featured" ? "text-white" : "text-red-500"}`} />
+            <span className="hidden xs:inline">Featured</span>
           </motion.button>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setActiveCategory("recent")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-bold transition-all ${
               activeCategory === "recent"
                 ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-500/50"
                 : "bg-white/5 text-gray-400 hover:bg-white/10"
             }`}
           >
-            <FaClock className={activeCategory === "recent" ? "text-white" : "text-blue-500"} />
-            Recently Added
+            <FaClock className={`text-sm sm:text-base ${activeCategory === "recent" ? "text-white" : "text-blue-500"}`} />
+            <span className="hidden xs:inline">Recently Added</span>
           </motion.button>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setActiveCategory("mostSearched")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-bold transition-all ${
               activeCategory === "mostSearched"
                 ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/50"
                 : "bg-white/5 text-gray-400 hover:bg-white/10"
             }`}
           >
-            <FaTrophy className={activeCategory === "mostSearched" ? "text-white" : "text-purple-500"} />
-            Most Searched
+            <FaTrophy className={`text-sm sm:text-base ${activeCategory === "mostSearched" ? "text-white" : "text-purple-500"}`} />
+            <span className="hidden xs:inline">Most Searched</span>
           </motion.button>
         </div>
 

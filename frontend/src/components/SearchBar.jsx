@@ -54,7 +54,7 @@ export default function SearchBar({ onSearchResults }) {
   };
 
   return (
-    <div className="relative border-b border-white/5 mb-8 z-50">
+    <div className="relative border-b border-white/5 mb-8 z-30">
       {/* Animated Background */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <motion.div
@@ -149,7 +149,7 @@ export default function SearchBar({ onSearchResults }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-[calc(100%+0.5rem)] left-0 right-0 bg-black/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden z-[99999] max-h-[400px] overflow-y-auto"
+                  className="absolute top-[calc(100%+0.5rem)] left-0 right-0 bg-black/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden z-[100] max-h-[400px] overflow-y-auto"
                   style={{
                     scrollbarWidth: 'thin',
                     scrollbarColor: '#4b5563 #1f2937'

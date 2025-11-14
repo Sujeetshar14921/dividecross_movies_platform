@@ -93,8 +93,8 @@ const Home = React.memo(() => {
         </div>
       )}
       
-      {/* Search Bar Section - High z-index for dropdown visibility */}
-      <div className="relative z-50">
+      {/* Search Bar Section - Below sidebar z-index */}
+      <div className="relative z-30">
         <SearchBar onSearchResults={handleSearchResults} />
       </div>
 

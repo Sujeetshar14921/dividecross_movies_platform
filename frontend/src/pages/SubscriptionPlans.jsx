@@ -77,24 +77,24 @@ export default function SubscriptionPlans() {
   if (loading) return <Loader />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white py-6 sm:py-12 px-4">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 sm:mb-4 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
             Choose Your Plan
           </h1>
-          <p className="text-xl text-gray-400">
+          <p className="text-base sm:text-xl text-gray-400">
             Unlimited movies, flexible plans. Cancel anytime.
           </p>
         </motion.div>
 
         {/* Plans Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
           {plans.map((plan, index) => {
             const color = getPlanColor(plan.name);
             const colors = getColorClasses(color);
@@ -106,34 +106,34 @@ export default function SubscriptionPlans() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className={`relative rounded-2xl bg-gradient-to-br ${colors.bg} border-2 ${colors.border} p-6 ${
-                  isPopular ? 'scale-105 shadow-2xl shadow-red-500/20' : ''
+                className={`relative rounded-xl sm:rounded-2xl bg-gradient-to-br ${colors.bg} border-2 ${colors.border} p-4 sm:p-6 ${
+                  isPopular ? 'sm:scale-105 shadow-2xl shadow-red-500/20' : ''
                 }`}
               >
                 {/* Popular Badge */}
                 {isPopular && (
-                  <div className={`absolute -top-4 left-1/2 transform -translate-x-1/2 px-6 py-1 ${colors.badge} rounded-full text-sm font-bold`}>
+                  <div className={`absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2 px-4 sm:px-6 py-1 ${colors.badge} rounded-full text-xs sm:text-sm font-bold`}>
                     ⭐ Most Popular
                   </div>
                 )}
 
                 {/* Plan Name */}
-                <div className="mb-6">
-                  <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                <div className="mb-4 sm:mb-6">
+                  <h3 className="text-xl sm:text-2xl font-bold mb-2">{plan.name}</h3>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-black">₹{plan.price}</span>
+                    <span className="text-3xl sm:text-4xl font-black">₹{plan.price}</span>
                     {plan.price > 0 && (
-                      <span className="text-gray-400">/{plan.duration} days</span>
+                      <span className="text-sm sm:text-base text-gray-400">/{plan.duration} days</span>
                     )}
                   </div>
                 </div>
 
                 {/* Features */}
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-gray-300">{feature}</span>
+                      <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-xs sm:text-sm text-gray-300">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -142,7 +142,7 @@ export default function SubscriptionPlans() {
                 <button
                   onClick={() => handleSubscribe(plan)}
                   disabled={plan.price === 0}
-                  className={`w-full py-3 rounded-lg font-bold transition-all ${colors.button} ${
+                  className={`w-full py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-bold transition-all ${colors.button} ${
                     plan.price === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
                   }`}
                 >
@@ -158,18 +158,18 @@ export default function SubscriptionPlans() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-gradient-to-r from-orange-900/30 to-yellow-900/30 border-2 border-orange-600/50 rounded-2xl p-8 text-center"
+          className="bg-gradient-to-r from-orange-900/30 to-yellow-900/30 border-2 border-orange-600/50 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-center"
         >
-          <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
             Pay Per View
           </h3>
-          <p className="text-gray-300 mb-4 max-w-2xl mx-auto">
-            Don't want a subscription? Rent individual movies for just <span className="text-2xl font-bold text-orange-400">₹49</span> each.
+          <p className="text-sm sm:text-base text-gray-300 mb-4 max-w-2xl mx-auto">
+            Don't want a subscription? Rent individual movies for just <span className="text-xl sm:text-2xl font-bold text-orange-400">₹49</span> each.
             Watch anytime within 48 hours of purchase.
           </p>
           <button
             onClick={() => navigate('/')}
-            className="bg-gradient-to-r from-orange-600 to-yellow-600 hover:from-orange-700 hover:to-yellow-700 text-white px-8 py-3 rounded-lg font-bold transition-all hover:scale-105"
+            className="bg-gradient-to-r from-orange-600 to-yellow-600 hover:from-orange-700 hover:to-yellow-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-bold transition-all hover:scale-105"
           >
             Browse Movies
           </button>
@@ -180,12 +180,12 @@ export default function SubscriptionPlans() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="mt-16 text-center"
+          className="mt-12 sm:mt-16 text-center"
         >
-          <p className="text-gray-400 mb-4">
+          <p className="text-sm sm:text-base text-gray-400 mb-4">
             Cancel anytime, no questions asked.
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-xs sm:text-sm text-gray-500">
             Secure payment powered by Razorpay 🔒
           </p>
         </motion.div>

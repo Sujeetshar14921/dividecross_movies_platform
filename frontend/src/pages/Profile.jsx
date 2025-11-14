@@ -55,9 +55,9 @@ const Profile = () => {
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setMessage("Image size should be less than 5MB");
+    // Validate file size (max 2MB for better performance)
+    if (file.size > 2 * 1024 * 1024) {
+      setMessage("Image size should be less than 2MB");
       setMessageType("error");
       return;
     }
@@ -70,26 +70,32 @@ const Profile = () => {
       try {
         const res = await API.put(
           "/api/users/update-profile",
-          { profilePicture: reader.result },
-          { headers: { Authorization: `Bearer ${user.token}` } }
+          { profilePicture: reader.result }
         );
         
         setUserData({ ...userData, profilePicture: reader.result });
         
-        // Update user context
+        // Update AuthContext with new user data
         if (res.data.user) {
-          setUser({ ...user, ...res.data.user });
+          const token = localStorage.getItem("token");
+          setUser({ ...res.data.user, token });
         }
         
         setMessage("Profile picture updated successfully!");
         setMessageType("success");
         setTimeout(() => setMessage(""), 3000);
       } catch (err) {
-        setMessage("Error uploading image!");
+        console.error("Image upload error:", err);
+        setMessage(err.response?.data?.message || "Error uploading image!");
         setMessageType("error");
       } finally {
         setUploadingImage(false);
       }
+    };
+    reader.onerror = () => {
+      setMessage("Error reading file!");
+      setMessageType("error");
+      setUploadingImage(false);
     };
     reader.readAsDataURL(file);
   };

@@ -78,15 +78,19 @@ export default function MovieDetails() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white">
       {/* Hero Section with Backdrop */}
-      <div className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] overflow-hidden">
+      <div className="relative h-[55vh] sm:h-[65vh] md:h-[75vh] lg:h-[85vh] overflow-hidden">
         {backdropUrl && (
           <>
-            <div 
-              className="absolute inset-0 bg-cover bg-center transform scale-105 blur-sm"
+            <motion.div 
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1.05 }}
+              transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
+              className="absolute inset-0 bg-cover bg-center"
               style={{ backgroundImage: `url(${backdropUrl})` }}
-            ></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60"></div>
+            ></motion.div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/70"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black"></div>
           </>
         )}
         
@@ -105,11 +109,14 @@ export default function MovieDetails() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="relative hidden md:block"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-red-500/30 to-pink-500/30 blur-2xl rounded-lg"></div>
-                <img 
+                <div className="absolute -inset-2 bg-gradient-to-r from-red-500/40 via-pink-500/40 to-purple-500/40 blur-3xl rounded-lg opacity-70"></div>
+                <motion.img 
                   src={posterUrl}
                   alt={movie.title}
-                  className="relative w-40 h-60 lg:w-56 lg:h-80 object-cover rounded-xl shadow-2xl border-4 border-white/10 transform hover:scale-105 transition-transform duration-300"
+                  whileHover={{ scale: 1.05, rotateY: 5 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative w-44 h-64 lg:w-60 lg:h-[360px] object-cover rounded-2xl shadow-2xl border-4 border-white/20"
+                  style={{ boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8)' }}
                   onError={(e) => e.target.style.display = 'none'}
                 />
               </motion.div>
@@ -121,7 +128,12 @@ export default function MovieDetails() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 sm:mb-3 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent drop-shadow-lg"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-2 sm:mb-3 md:mb-4"
+                style={{
+                  textShadow: '0 0 30px rgba(255,255,255,0.3), 0 0 60px rgba(255,255,255,0.2), 0 4px 20px rgba(0,0,0,0.8)',
+                  color: '#ffffff',
+                  letterSpacing: '-0.02em'
+                }}
               >
                 {movie.title}
               </motion.h1>
@@ -131,9 +143,13 @@ export default function MovieDetails() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="text-sm sm:text-base md:text-xl text-gray-300 italic mb-3 sm:mb-6 font-light line-clamp-2"
+                  className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-4 sm:mb-6 md:mb-8 font-light line-clamp-2 max-w-4xl"
+                  style={{
+                    fontStyle: 'italic',
+                    textShadow: '0 2px 10px rgba(0,0,0,0.8)'
+                  }}
                 >
-                  "{movie.tagline}"
+                  {movie.tagline}
                 </motion.p>
               )}
               
@@ -141,34 +157,48 @@ export default function MovieDetails() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="flex flex-wrap gap-2 sm:gap-4 items-center mb-4 sm:mb-6"
+                className="flex flex-wrap gap-3 sm:gap-4 md:gap-5 items-center mb-5 sm:mb-7 md:mb-8"
               >
                 {movie.vote_average > 0 && (
-                  <div className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black/50 backdrop-blur-sm border border-white/10`}>
-                    <span className="text-xl sm:text-3xl">⭐</span>
-                    <span className={`text-lg sm:text-2xl font-bold ${getRatingColor(movie.vote_average)}`}>
-                      {movie.vote_average.toFixed(1)}
-                    </span>
-                    <span className="text-xs sm:text-sm text-gray-400">/10</span>
+                  <div className="flex items-center gap-2 sm:gap-2.5">
+                    <span className="text-2xl sm:text-3xl md:text-4xl">⭐</span>
+                    <div className="flex items-baseline gap-1">
+                      <span className={`text-2xl sm:text-3xl md:text-4xl font-black ${getRatingColor(movie.vote_average)}`}
+                        style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
+                        {movie.vote_average.toFixed(1)}
+                      </span>
+                      <span className="text-sm sm:text-base text-gray-400 font-medium">/10</span>
+                    </div>
                   </div>
                 )}
                 
                 {movie.release_date && (
-                  <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-gray-800/80 to-gray-700/80 backdrop-blur-sm rounded-full text-sm sm:text-base text-gray-200 font-semibold border border-white/10">
-                    📅 {new Date(movie.release_date).getFullYear()}
-                  </span>
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-gray-200">
+                    <span className="text-lg sm:text-xl">📅</span>
+                    <span className="text-base sm:text-lg md:text-xl font-semibold" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+                      {new Date(movie.release_date).getFullYear()}
+                    </span>
+                  </div>
                 )}
                 
                 {movie.runtime && (
-                  <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-gray-800/80 to-gray-700/80 backdrop-blur-sm rounded-full text-sm sm:text-base text-gray-200 font-semibold border border-white/10">
-                    ⏱️ {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
-                  </span>
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-gray-200">
+                    <span className="text-lg sm:text-xl">⏱️</span>
+                    <span className="text-base sm:text-lg md:text-xl font-semibold" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+                      {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
+                    </span>
+                  </div>
                 )}
                 
+                <div className="w-px h-8 bg-gray-600 hidden sm:block"></div>
+                
                 {movie.status && (
-                  <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-green-600/80 to-emerald-600/80 backdrop-blur-sm rounded-full text-sm sm:text-base text-white font-semibold border border-white/10">
-                    ✓ {movie.status}
-                  </span>
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="text-lg sm:text-xl">✓</span>
+                    <span className="text-base sm:text-lg md:text-xl font-semibold text-green-400" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+                      {movie.status}
+                    </span>
+                  </div>
                 )}
               </motion.div>
               
@@ -181,12 +211,17 @@ export default function MovieDetails() {
                   className="flex flex-wrap gap-2 sm:gap-3"
                 >
                   {movie.genres.map((genre, index) => (
-                    <span 
+                    <motion.span 
                       key={index}
-                      className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-red-600 to-pink-600 rounded-full text-xs sm:text-sm font-bold shadow-lg hover:shadow-red-500/50 hover:scale-105 transition-all border border-white/20"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.7 + index * 0.05 }}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      className="px-4 sm:px-5 py-2 sm:py-2.5 bg-gradient-to-r from-red-600 via-pink-600 to-purple-600 rounded-full text-sm sm:text-base font-bold shadow-lg transition-all border border-white/30 cursor-default"
+                      style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                     >
                       {genre}
-                    </span>
+                    </motion.span>
                   ))}
                 </motion.div>
               )}

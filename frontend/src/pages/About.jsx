@@ -75,7 +75,7 @@ export default function About() {
           />
         </div>
 
-        <div className="relative container mx-auto px-6 py-20">
+        <div className="relative container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -86,15 +86,15 @@ export default function About() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-red-500 to-pink-500 mb-6 shadow-2xl shadow-red-500/50"
+              className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-red-500 to-pink-500 mb-4 sm:mb-6 shadow-2xl shadow-red-500/50"
             >
-              <FaFilm className="text-5xl text-white" />
+              <FaFilm className="text-3xl sm:text-4xl md:text-5xl text-white" />
             </motion.div>
 
-            <h1 className="text-6xl md:text-7xl font-black mb-6 bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
               About Dividecross
             </h1>
-            <p className="text-xl text-gray-300 leading-relaxed mb-8">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed mb-6 sm:mb-8 px-4">
               Your ultimate destination for discovering and streaming movies from around the world. 
               We bring entertainment right to your fingertips with a vast collection of films, 
               personalized recommendations, and an unmatched viewing experience.
@@ -103,14 +103,14 @@ export default function About() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="flex items-center justify-center gap-4 text-gray-400"
+              className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm md:text-base text-gray-400"
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-1.5 sm:gap-2">
                 <FaFilm className="text-red-500" />
                 Movies Platform
               </span>
-              <span>•</span>
-              <span className="flex items-center gap-2">
+              <span className="hidden sm:inline">•</span>
+              <span className="flex items-center gap-1.5 sm:gap-2">
                 <FaStar className="text-yellow-500" />
                 Premium Quality
               </span>
@@ -120,50 +120,50 @@ export default function About() {
       </div>
 
       {/* Stats Section */}
-      <div className="container mx-auto px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + index * 0.1 }}
-              className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 text-center hover:bg-white/10 transition-all hover:scale-105"
+              className="bg-white/5 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 text-center hover:bg-white/10 transition-all hover:scale-105"
             >
-              <div className="text-4xl text-red-500 mb-3 flex justify-center">
+              <div className="text-2xl sm:text-3xl md:text-4xl text-red-500 mb-2 sm:mb-3 flex justify-center">
                 {stat.icon}
               </div>
-              <div className="text-4xl font-black bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent mb-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent mb-1 sm:mb-2">
                 {stat.number}
               </div>
-              <div className="text-gray-400 font-semibold">{stat.label}</div>
+              <div className="text-xs sm:text-sm md:text-base text-gray-400 font-semibold">{stat.label}</div>
             </motion.div>
           ))}
         </div>
       </div>
 
       {/* Mission Section */}
-      <div className="container mx-auto px-6 py-16">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-gradient-to-br from-red-600/10 to-purple-600/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-white/10"
+          className="bg-gradient-to-br from-red-600/10 to-purple-600/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-white/10"
         >
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-pink-500 mb-6 shadow-lg">
-              <FaRocket className="text-3xl text-white" />
+            <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-red-500 to-pink-500 mb-4 sm:mb-6 shadow-lg">
+              <FaRocket className="text-2xl sm:text-2xl md:text-3xl text-white" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
               Our Mission
             </h2>
-            <p className="text-xl text-gray-300 leading-relaxed mb-6">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed mb-4 sm:mb-6">
               At Dividecross, we believe that everyone deserves access to quality entertainment. 
               Our mission is to create the most comprehensive and user-friendly movie platform that 
               connects film enthusiasts with the stories they love.
             </p>
-            <p className="text-lg text-gray-400 leading-relaxed">
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 leading-relaxed">
               We're constantly innovating to bring you the best features, from AI-powered recommendations 
               to seamless streaming, ensuring that your movie-watching experience is nothing short of exceptional.
             </p>
@@ -172,22 +172,22 @@ export default function About() {
       </div>
 
       {/* Features Section */}
-      <div className="container mx-auto px-6 py-16">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-10 md:mb-12"
         >
-          <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 sm:mb-4 bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
             Why Choose Dividecross?
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 max-w-2xl mx-auto px-4">
             Discover what makes us the premier choice for movie lovers worldwide
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {features.map((feature, index) => (
             <motion.div
               key={index}
@@ -196,15 +196,15 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -10, scale: 1.02 }}
-              className="bg-white/5 backdrop-blur-xl rounded-2xl p-8 border border-white/10 hover:border-white/20 transition-all group"
+              className="bg-white/5 backdrop-blur-xl rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-white/20 transition-all group"
             >
-              <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
+              <div className={`inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${feature.gradient} mb-4 sm:mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
                 {feature.icon}
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-red-500 group-hover:to-pink-500 transition-all">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-red-500 group-hover:to-pink-500 transition-all">
                 {feature.title}
               </h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>
@@ -213,37 +213,37 @@ export default function About() {
       </div>
 
       {/* Technology Section */}
-      <div className="container mx-auto px-6 py-16">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-gradient-to-br from-purple-600/10 to-blue-600/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-white/10"
+          className="bg-gradient-to-br from-purple-600/10 to-blue-600/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-white/10"
         >
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
               Built with Modern Technology
             </h2>
-            <p className="text-xl text-gray-300 leading-relaxed mb-6">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed mb-4 sm:mb-6 px-2">
               Dividecross is powered by cutting-edge technology stack including React, Node.js, 
               MongoDB, and advanced AI algorithms. We leverage TMDb API to provide you with 
               comprehensive movie information, ratings, and metadata.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-              <span className="px-6 py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-sm">
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mt-6 sm:mt-8">
+              <span className="px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-xs sm:text-sm">
                 React.js
               </span>
-              <span className="px-6 py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-sm">
+              <span className="px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-xs sm:text-sm">
                 Node.js
               </span>
-              <span className="px-6 py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-sm">
+              <span className="px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-xs sm:text-sm">
                 MongoDB
               </span>
-              <span className="px-6 py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-sm">
+              <span className="px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-xs sm:text-sm">
                 TMDb API
               </span>
-              <span className="px-6 py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-sm">
+              <span className="px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 bg-white/5 rounded-full border border-white/10 font-semibold text-xs sm:text-sm">
                 AI/ML
               </span>
             </div>
@@ -252,24 +252,24 @@ export default function About() {
       </div>
 
       {/* Call to Action */}
-      <div className="container mx-auto px-6 py-20">
+      <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-16 md:py-20">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-red-600 to-pink-600 rounded-3xl p-12 text-center shadow-2xl shadow-red-500/50"
+          className="bg-gradient-to-r from-red-600 to-pink-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 text-center shadow-2xl shadow-red-500/50"
         >
-          <h2 className="text-4xl md:text-5xl font-black mb-4 text-white">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 sm:mb-4 text-white">
             Ready to Start Watching?
           </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
             Join thousands of movie enthusiasts and discover your next favorite film today!
           </p>
           <motion.a
             href="/"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-3 bg-white text-red-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all"
+            className="inline-flex items-center gap-2 sm:gap-3 bg-white text-red-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all"
           >
             <FaPlay />
             Explore Movies Now

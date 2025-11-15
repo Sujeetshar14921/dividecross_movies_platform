@@ -1,20 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Lock, Play } from "lucide-react";
+import { Lock, Play, Heart, Share2, Send, Trash2 } from "lucide-react";
 import API from "../api/axios";
 import Loader from "../components/Loader";
 import MovieCard from "../components/MovieCard";
+import { AuthContext } from "../context/AuthContext";
 
 export default function MovieDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showFullMovie, setShowFullMovie] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
   const [accessType, setAccessType] = useState(null);
   const [checkingAccess, setCheckingAccess] = useState(true);
+  
+  // Engagement states
+  const [engagement, setEngagement] = useState({ likes: 0, shares: 0, hasLiked: false, hasShared: false });
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [commentLoading, setCommentLoading] = useState(false);
 
   const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/original';
 
@@ -35,6 +43,10 @@ export default function MovieDetails() {
           setHasAccess(false);
         }
         setCheckingAccess(false);
+        
+        // Fetch engagement and comments
+        fetchEngagement();
+        fetchComments();
       } catch (error) {
         console.error('Error fetching movie details:', error);
         setMovie(null);
@@ -45,6 +57,99 @@ export default function MovieDetails() {
 
     fetchMovieDetails();
   }, [id]);
+
+  const fetchEngagement = async () => {
+    try {
+      const response = await API.get(`/api/movies/engagement/${id}`);
+      setEngagement(response.data);
+    } catch (error) {
+      setEngagement({ likes: 0, shares: 0, hasLiked: false, hasShared: false });
+    }
+  };
+
+  const fetchComments = async () => {
+    try {
+      const response = await API.get(`/api/movies/comments/${id}`);
+      setComments(response.data.comments || []);
+    } catch (error) {
+      setComments([]);
+    }
+  };
+
+  const handleLike = async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const response = await API.post(`/api/movies/engagement/${id}/like`);
+      setEngagement(prev => ({
+        ...prev,
+        likes: response.data.likes,
+        hasLiked: response.data.hasLiked
+      }));
+    } catch (error) {
+      // Silently fail
+    }
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: movie.title,
+          text: `Check out ${movie.title} on dividecross!`,
+          url
+        });
+        await API.post(`/api/movies/engagement/${id}/share`);
+        setEngagement(prev => ({ ...prev, shares: prev.shares + 1, hasShared: true }));
+      } catch (error) {}
+    } else {
+      navigator.clipboard.writeText(url);
+      alert('Link copied to clipboard!');
+      try {
+        await API.post(`/api/movies/engagement/${id}/share`);
+        setEngagement(prev => ({ ...prev, shares: prev.shares + 1, hasShared: true }));
+      } catch (error) {}
+    }
+  };
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    if (!newComment.trim()) return;
+
+    try {
+      setCommentLoading(true);
+      const response = await API.post(`/api/movies/comments/${id}`, {
+        comment: newComment.trim()
+      });
+      setComments([response.data.comment, ...comments]);
+      setNewComment("");
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to add comment');
+    } finally {
+      setCommentLoading(false);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    if (!confirm('Delete this comment?')) return;
+
+    try {
+      await API.delete(`/api/movies/comments/${commentId}`);
+      setComments(comments.filter(c => c._id !== commentId));
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      alert('Failed to delete comment');
+    }
+  };
 
   if (loading) return <Loader />;
   if (!movie) return (
@@ -93,6 +198,40 @@ export default function MovieDetails() {
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black"></div>
           </>
         )}
+
+        {/* Like & Share Buttons - Top Right */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 flex gap-2 sm:gap-3"
+        >
+          {/* Like Button */}
+          <motion.button
+            onClick={handleLike}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-black/60 transition-all group"
+          >
+            <Heart 
+              className={`w-5 h-5 sm:w-6 sm:h-6 transition-all ${
+                engagement.hasLiked 
+                  ? 'fill-red-500 text-red-500' 
+                  : 'text-white group-hover:text-red-400'
+              }`}
+            />
+          </motion.button>
+
+          {/* Share Button */}
+          <motion.button
+            onClick={handleShare}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-black/60 transition-all group"
+          >
+            <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-blue-400 transition-colors" />
+          </motion.button>
+        </motion.div>
         
         <div className="relative z-10 container mx-auto px-4 h-full flex items-end pb-6 sm:pb-12">
           <motion.div 
@@ -398,6 +537,98 @@ export default function MovieDetails() {
               </p>
             </div>
 
+            {/* Comments Section */}
+            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl relative z-10">
+              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                <div className="w-1 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-emerald-500 rounded-full"></div>
+                <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                  Comments ({comments.length})
+                </h2>
+              </div>
+
+              {/* Add Comment Form */}
+              <form onSubmit={handleAddComment} className="mb-6">
+                <div className="flex gap-3">
+                  <input
+                    type="text"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder={user ? "Add a comment..." : "Login to comment"}
+                    disabled={!user || commentLoading}
+                    maxLength={500}
+                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all disabled:opacity-50"
+                  />
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    disabled={!user || !newComment.trim() || commentLoading}
+                    className="px-4 sm:px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    <Send className="w-5 h-5" />
+                    <span className="hidden sm:inline">Post</span>
+                  </motion.button>
+                </div>
+                {newComment.length > 0 && (
+                  <p className="text-xs text-gray-500 mt-2">{newComment.length}/500 characters</p>
+                )}
+              </form>
+
+              {/* Comments List */}
+              <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                {comments.length === 0 ? (
+                  <p className="text-center text-gray-500 py-8">No comments yet. Be the first to comment!</p>
+                ) : (
+                  comments.map((comment) => (
+                    <motion.div
+                      key={comment._id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-white/5 rounded-lg p-4 border border-white/10"
+                    >
+                      <div className="flex items-start gap-3">
+                        {/* User Avatar */}
+                        <div className="flex-shrink-0">
+                          {comment.userProfilePicture ? (
+                            <img 
+                              src={comment.userProfilePicture} 
+                              alt={comment.username}
+                              className="w-10 h-10 rounded-full object-cover border-2 border-white/20"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                              {comment.username?.charAt(0).toUpperCase()}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Comment Content */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <h4 className="text-sm font-semibold text-white">{comment.username}</h4>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-500">
+                                {new Date(comment.createdAt).toLocaleDateString()}
+                              </span>
+                              {user && comment.userId === user._id && (
+                                <button
+                                  onClick={() => handleDeleteComment(comment._id)}
+                                  className="text-red-400 hover:text-red-300 transition-colors"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                          <p className="text-gray-300 text-sm break-words">{comment.comment}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+                )}
+              </div>
+            </div>
+
             {/* Director */}
             {movie.director && (
               <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-purple-500/20 shadow-xl">
@@ -500,6 +731,31 @@ export default function MovieDetails() {
                     </div>
                   </div>
                 )}
+
+                {/* Engagement Stats */}
+                <div className="p-2.5 sm:p-3 bg-gradient-to-br from-red-900/20 to-pink-900/20 rounded-lg border border-red-500/20">
+                  <p className="text-gray-400 text-xs sm:text-sm font-semibold mb-2">Engagement</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs sm:text-sm text-gray-300 flex items-center gap-1.5">
+                        <Heart className="w-3.5 h-3.5 fill-red-500 text-red-500" />
+                        Likes
+                      </span>
+                      <span className="text-sm sm:text-base font-bold text-red-400">
+                        {engagement.likes.toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs sm:text-sm text-gray-300 flex items-center gap-1.5">
+                        <Share2 className="w-3.5 h-3.5 text-blue-400" />
+                        Shares
+                      </span>
+                      <span className="text-sm sm:text-base font-bold text-blue-400">
+                        {engagement.shares.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>

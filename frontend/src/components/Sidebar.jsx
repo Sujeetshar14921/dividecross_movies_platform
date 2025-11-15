@@ -126,13 +126,10 @@ const Sidebar = ({ isOpen, onClose }) => {
             animate={{ x: 0 }}
             exit={{ x: -320 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed left-0 top-0 h-full w-72 sm:w-80 bg-gradient-to-b from-gray-900 via-black to-gray-900 shadow-2xl z-[9999] flex flex-col overflow-hidden"
-            style={{ 
-              boxShadow: '4px 0 30px rgba(239, 68, 68, 0.4), 8px 0 60px rgba(236, 72, 153, 0.2)'
-            }}
+            className="fixed left-0 top-0 h-full w-72 sm:w-80 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 shadow-2xl z-[9999] flex flex-col overflow-hidden border-r border-white/10"
           >
             {/* Header - Fixed */}
-            <div className="flex-shrink-0 bg-gradient-to-r from-red-600 via-pink-600 to-red-700 p-3 sm:p-4 shadow-xl">
+            <div className="flex-shrink-0 bg-gray-900/95 backdrop-blur-md p-3 sm:p-4 shadow-lg border-b border-white/10">
               <div className="flex items-center justify-between mb-2 sm:mb-3">
                 <motion.h2 
                   initial={{ opacity: 0, x: -20 }}
@@ -156,7 +153,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 onClick={() => handleNavigation("/profile")}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-black/20 backdrop-blur-md rounded-xl p-2.5 sm:p-3 cursor-pointer hover:bg-black/30 transition-all duration-300 border border-white/10"
+                className="bg-gray-800/40 backdrop-blur-md rounded-xl p-2.5 sm:p-3 cursor-pointer hover:bg-gray-800/60 transition-all duration-300 border border-white/10"
               >
                 <div className="flex items-center gap-2.5 sm:gap-3">
                   {user ? (
@@ -235,42 +232,20 @@ const Sidebar = ({ isOpen, onClose }) => {
                   }}
                   whileHover={{ scale: 1.03, x: 4 }}
                   whileTap={{ scale: 0.97 }}
-                  className="w-full group relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-800/60 to-gray-900/60 hover:from-gray-700/80 hover:to-gray-800/80 p-3 sm:p-4 flex items-center gap-3 sm:gap-4 transition-all duration-300 border border-gray-700/40 hover:border-red-500/60 shadow-lg hover:shadow-2xl hover:shadow-red-500/30 backdrop-blur-sm cursor-pointer"
+                  className="w-full group relative overflow-hidden rounded-xl sm:rounded-2xl bg-gray-800/50 hover:bg-gray-700/60 p-3 sm:p-4 flex items-center gap-3 sm:gap-4 transition-all duration-300 border border-gray-700/40 hover:border-gray-600/60 shadow-lg backdrop-blur-sm cursor-pointer"
                   style={{ userSelect: 'none' }}
                 >
-                  {/* Animated Shimmer Effect */}
+                  {/* Icon */}
                   <motion.div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{
-                      background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)`,
-                    }}
-                    animate={{
-                      x: ['-100%', '100%']
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
-                  />
-                  
-                  {/* Gradient Background on Hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
-                  
-                  {/* Icon with Enhanced Glow */}
-                  <motion.div 
-                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-xl relative z-10 group-hover:shadow-2xl`}
-                    whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-                    transition={{ duration: 0.5 }}
-                    style={{
-                      boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)'
-                    }}
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-lg relative z-10`}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
                   >
                     <item.icon className="text-lg sm:text-xl" />
                   </motion.div>
 
-                  {/* Label with better typography */}
-                  <span className="text-white font-bold text-sm sm:text-base flex-1 text-left relative z-10 group-hover:text-purple-100 transition-colors tracking-wide">
+                  {/* Label */}
+                  <span className="text-white font-bold text-sm sm:text-base flex-1 text-left relative z-10 transition-colors tracking-wide">
                     {item.label}
                   </span>
 

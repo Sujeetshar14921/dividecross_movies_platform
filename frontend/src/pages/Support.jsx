@@ -41,70 +41,70 @@ export default function Support() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white py-6 sm:py-12 px-4">
       <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
-          <h1 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 sm:mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
             Support Center
           </h1>
-          <p className="text-xl text-gray-400">
+          <p className="text-base sm:text-lg md:text-xl text-gray-400">
             We're here to help! Get in touch with us.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700"
+            className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-700"
           >
-            <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-              <FaHeadset className="text-blue-500" />
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+              <FaHeadset className="text-blue-500 text-lg sm:text-xl" />
               Send us a Message
             </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <div>
-                <label className="block text-sm font-medium mb-2">Name</label>
+                <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">Name</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                   placeholder="Your full name"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Email</label>
+                <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">Email</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                   placeholder="your.email@example.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Subject</label>
+                <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">Subject</label>
                 <select
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                 >
                   <option value="">Select a subject</option>
                   <option value="Payment Issue">Payment Issue</option>
@@ -117,14 +117,14 @@ export default function Support() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Message</label>
+                <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">Message</label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  rows="5"
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
+                  rows="4"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
                   placeholder="Describe your issue or query..."
                 />
               </div>
@@ -132,7 +132,7 @@ export default function Support() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Sending..." : "Send Message"}
               </button>
@@ -144,36 +144,36 @@ export default function Support() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
             {/* Contact Details */}
-            <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 backdrop-blur-sm rounded-2xl p-8 border border-blue-700/50">
-              <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
+            <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-blue-700/50">
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Contact Information</h3>
               
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <FaEnvelope className="text-3xl text-blue-400 mt-1" />
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <FaEnvelope className="text-2xl sm:text-3xl text-blue-400 mt-1 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold text-lg mb-1">Email</h4>
-                    <p className="text-gray-400">support@cineverse.com</p>
-                    <p className="text-sm text-gray-500">We'll respond within 24 hours</p>
+                    <h4 className="font-semibold text-base sm:text-lg mb-1">Email</h4>
+                    <p className="text-sm sm:text-base text-gray-400">support@cineverse.com</p>
+                    <p className="text-xs sm:text-sm text-gray-500">We'll respond within 24 hours</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <FaPhone className="text-3xl text-green-400 mt-1" />
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <FaPhone className="text-2xl sm:text-3xl text-green-400 mt-1 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold text-lg mb-1">Phone</h4>
-                    <p className="text-gray-400">+91 9876543210</p>
-                    <p className="text-sm text-gray-500">Mon-Fri, 9 AM - 6 PM IST</p>
+                    <h4 className="font-semibold text-base sm:text-lg mb-1">Phone</h4>
+                    <p className="text-sm sm:text-base text-gray-400">+91 9876543210</p>
+                    <p className="text-xs sm:text-sm text-gray-500">Mon-Fri, 9 AM - 6 PM IST</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <FaMapMarkerAlt className="text-3xl text-red-400 mt-1" />
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <FaMapMarkerAlt className="text-2xl sm:text-3xl text-red-400 mt-1 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold text-lg mb-1">Address</h4>
-                    <p className="text-gray-400">
+                    <h4 className="font-semibold text-base sm:text-lg mb-1">Address</h4>
+                    <p className="text-sm sm:text-base text-gray-400">
                       dividecross HQ<br />
                       3110 Kotwa Narayanpur<br />
                       Ballia, Uttar Pradesh 277501
@@ -184,8 +184,8 @@ export default function Support() {
             </div>
 
             {/* FAQ Section */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700">
-              <h3 className="text-2xl font-bold mb-6">Quick Help</h3>
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-700">
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Quick Help</h3>
               
               <div className="space-y-4">
                 <div>

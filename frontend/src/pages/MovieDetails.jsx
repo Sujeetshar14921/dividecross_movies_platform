@@ -516,13 +516,13 @@ export default function MovieDetails() {
         )}
 
         {/* Overview & Details with Glass Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {/* Overview Section */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.9 }}
-            className="md:col-span-2 space-y-6 sm:space-y-8"
+            className="lg:col-span-2 space-y-6 sm:space-y-8">
           >
             {/* Overview Card */}
             <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl overflow-hidden">
@@ -647,7 +647,7 @@ export default function MovieDetails() {
                   <span className="text-2xl sm:text-3xl flex-shrink-0">🎭</span>
                   <h3 className="text-xl sm:text-2xl font-bold">Cast</h3>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
                   {movie.cast.map((actor) => (
                     <motion.div 
                       key={actor.id} 
@@ -685,7 +685,7 @@ export default function MovieDetails() {
             transition={{ delay: 1 }}
             className="space-y-4 sm:space-y-6"
           >
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl md:sticky md:top-4 overflow-hidden">
+            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl lg:sticky lg:top-4 overflow-hidden">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                 <span className="text-2xl sm:text-3xl flex-shrink-0">ℹ️</span>
                 <h3 className="text-xl sm:text-2xl font-bold">Movie Details</h3>
@@ -775,7 +775,7 @@ export default function MovieDetails() {
                 You May Also Like
               </h2>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
               {movie.similarMovies.map((similarMovie, index) => (
                 <motion.div
                   key={similarMovie.id}

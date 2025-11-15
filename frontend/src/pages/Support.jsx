@@ -63,7 +63,7 @@ export default function Support() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-700"
+            className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-700 overflow-hidden"
           >
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
               <FaHeadset className="text-blue-500 text-lg sm:text-xl" />
@@ -147,33 +147,33 @@ export default function Support() {
             className="space-y-4 sm:space-y-6"
           >
             {/* Contact Details */}
-            <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-blue-700/50">
+            <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-blue-700/50 overflow-hidden">
               <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Contact Information</h3>
               
               <div className="space-y-4 sm:space-y-6">
                 <div className="flex items-start gap-3 sm:gap-4">
                   <FaEnvelope className="text-2xl sm:text-3xl text-blue-400 mt-1 flex-shrink-0" />
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="font-semibold text-base sm:text-lg mb-1">Email</h4>
-                    <p className="text-sm sm:text-base text-gray-400">support@cineverse.com</p>
+                    <p className="text-sm sm:text-base text-gray-400 break-words">support@cineverse.com</p>
                     <p className="text-xs sm:text-sm text-gray-500">We'll respond within 24 hours</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 sm:gap-4">
                   <FaPhone className="text-2xl sm:text-3xl text-green-400 mt-1 flex-shrink-0" />
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="font-semibold text-base sm:text-lg mb-1">Phone</h4>
-                    <p className="text-sm sm:text-base text-gray-400">+91 9876543210</p>
+                    <p className="text-sm sm:text-base text-gray-400 break-words">+91 9876543210</p>
                     <p className="text-xs sm:text-sm text-gray-500">Mon-Fri, 9 AM - 6 PM IST</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 sm:gap-4">
                   <FaMapMarkerAlt className="text-2xl sm:text-3xl text-red-400 mt-1 flex-shrink-0" />
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="font-semibold text-base sm:text-lg mb-1">Address</h4>
-                    <p className="text-sm sm:text-base text-gray-400">
+                    <p className="text-sm sm:text-base text-gray-400 break-words">
                       dividecross HQ<br />
                       3110 Kotwa Narayanpur<br />
                       Ballia, Uttar Pradesh 277501
@@ -184,7 +184,7 @@ export default function Support() {
             </div>
 
             {/* FAQ Section */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-700">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-700 overflow-hidden">
               <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Quick Help</h3>
               
               <div className="space-y-4">

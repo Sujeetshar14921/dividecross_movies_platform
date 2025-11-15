@@ -196,15 +196,15 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -10, scale: 1.02 }}
-              className="bg-white/5 backdrop-blur-xl rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-white/20 transition-all group"
+              className="bg-white/5 backdrop-blur-xl rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-white/20 transition-all group overflow-hidden"
             >
               <div className={`inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${feature.gradient} mb-4 sm:mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
                 {feature.icon}
               </div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-red-500 group-hover:to-pink-500 transition-all">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-red-500 group-hover:to-pink-500 transition-all break-words">
                 {feature.title}
               </h3>
-              <p className="text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed break-words">
                 {feature.description}
               </p>
             </motion.div>
@@ -219,13 +219,13 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-gradient-to-br from-purple-600/10 to-blue-600/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-white/10"
+          className="bg-gradient-to-br from-purple-600/10 to-blue-600/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-white/10 overflow-hidden"
         >
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
               Built with Modern Technology
             </h2>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed mb-4 sm:mb-6 px-2">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed mb-4 sm:mb-6 px-2 break-words">
               Dividecross is powered by cutting-edge technology stack including React, Node.js, 
               MongoDB, and advanced AI algorithms. We leverage TMDb API to provide you with 
               comprehensive movie information, ratings, and metadata.
@@ -257,12 +257,12 @@ export default function About() {
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-red-600 to-pink-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 text-center shadow-2xl shadow-red-500/50"
+          className="bg-gradient-to-r from-red-600 to-pink-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 text-center shadow-2xl shadow-red-500/50 overflow-hidden"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 sm:mb-4 text-white">
             Ready to Start Watching?
           </h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-2 break-words">
             Join thousands of movie enthusiasts and discover your next favorite film today!
           </p>
           <motion.a

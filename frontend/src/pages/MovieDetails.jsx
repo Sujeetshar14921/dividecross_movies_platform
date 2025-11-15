@@ -525,30 +525,30 @@ export default function MovieDetails() {
             className="md:col-span-2 space-y-6 sm:space-y-8"
           >
             {/* Overview Card */}
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl">
+            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl overflow-hidden">
               <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                <div className="w-1 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
+                <div className="w-1 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full flex-shrink-0"></div>
                 <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
                   Story Overview
                 </h2>
               </div>
-              <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed">
+              <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed break-words">
                 {movie.overview || 'No overview available.'}
               </p>
             </div>
 
             {/* Comments Section */}
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl relative z-10">
+            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl relative z-10 overflow-hidden">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <div className="w-1 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-emerald-500 rounded-full"></div>
+                <div className="w-1 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-emerald-500 rounded-full flex-shrink-0"></div>
                 <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
                   Comments ({comments.length})
                 </h2>
               </div>
 
               {/* Add Comment Form */}
-              <form onSubmit={handleAddComment} className="mb-6">
-                <div className="flex gap-3">
+              <form onSubmit={handleAddComment} className="mb-4 sm:mb-6">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <input
                     type="text"
                     value={newComment}
@@ -556,17 +556,17 @@ export default function MovieDetails() {
                     placeholder={user ? "Add a comment..." : "Login to comment"}
                     disabled={!user || commentLoading}
                     maxLength={500}
-                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all disabled:opacity-50"
+                    className="flex-1 min-w-0 bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all disabled:opacity-50"
                   />
                   <motion.button
                     type="submit"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     disabled={!user || !newComment.trim() || commentLoading}
-                    className="px-4 sm:px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-xl text-sm sm:text-base font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    <Send className="w-5 h-5" />
-                    <span className="hidden sm:inline">Post</span>
+                    <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span>Post</span>
                   </motion.button>
                 </div>
                 {newComment.length > 0 && (
@@ -631,23 +631,23 @@ export default function MovieDetails() {
 
             {/* Director */}
             {movie.director && (
-              <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-purple-500/20 shadow-xl">
+              <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-purple-500/20 shadow-xl overflow-hidden">
                 <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                  <span className="text-2xl sm:text-3xl">🎬</span>
+                  <span className="text-2xl sm:text-3xl flex-shrink-0">🎬</span>
                   <h3 className="text-lg sm:text-xl font-bold">Director</h3>
                 </div>
-                <p className="text-gray-200 text-base sm:text-lg font-semibold">{movie.director.name}</p>
+                <p className="text-gray-200 text-base sm:text-lg font-semibold break-words">{movie.director.name}</p>
               </div>
             )}
 
             {/* Cast with Hover Effects */}
             {movie.cast && movie.cast.length > 0 && (
-              <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl">
+              <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl overflow-hidden">
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                  <span className="text-2xl sm:text-3xl">🎭</span>
+                  <span className="text-2xl sm:text-3xl flex-shrink-0">🎭</span>
                   <h3 className="text-xl sm:text-2xl font-bold">Cast</h3>
                 </div>
-                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
                   {movie.cast.map((actor) => (
                     <motion.div 
                       key={actor.id} 
@@ -685,9 +685,9 @@ export default function MovieDetails() {
             transition={{ delay: 1 }}
             className="space-y-4 sm:space-y-6"
           >
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl md:sticky md:top-4">
+            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl md:sticky md:top-4 overflow-hidden">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <span className="text-2xl sm:text-3xl">ℹ️</span>
+                <span className="text-2xl sm:text-3xl flex-shrink-0">ℹ️</span>
                 <h3 className="text-xl sm:text-2xl font-bold">Movie Details</h3>
               </div>
               
@@ -713,7 +713,7 @@ export default function MovieDetails() {
                 {movie.production_companies && movie.production_companies.length > 0 && (
                   <div className="p-2.5 sm:p-3 bg-black/30 rounded-lg border border-white/5">
                     <p className="text-gray-400 text-xs sm:text-sm font-semibold mb-2">Production</p>
-                    <p className="text-white text-xs sm:text-sm leading-relaxed">
+                    <p className="text-white text-xs sm:text-sm leading-relaxed break-words">
                       {movie.production_companies.slice(0, 3).join(', ')}
                     </p>
                   </div>

@@ -15,10 +15,8 @@ const supportRoutes = require("./routes/supportRoutes");
 
 const app = express();
 
-// ✅ Simple, safe JSON parser
 app.use(express.json({ limit: "10mb" }));
 
-// ✅ Enable CORS for frontend
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
@@ -46,10 +44,6 @@ app.use(
   })
 );
 
-// Handle preflight requests for all routes
-app.options('*', cors());
-
-// ✅ Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
@@ -57,7 +51,6 @@ mongoose
   })
   .catch((err) => console.error("❌ MongoDB Connection Error:", err.message));
 
-// ✅ Mount API Routes
 app.use("/api/tmdb", tmdbRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
@@ -67,18 +60,15 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/support", supportRoutes);
 
-// ✅ Root Health Check
 app.get("/", (req, res) => {
   res.send("🎬 CineVerse Backend Running Successfully!");
 });
 
-// ✅ Global Error Handler (prevents crashes)
 app.use((err, req, res, next) => {
   console.error("🔥 Global Error:", err.stack);
   res.status(500).json({ message: "Something went wrong!", error: err.message });
 });
 
-// ✅ Start Server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Server running on port ${PORT}`);

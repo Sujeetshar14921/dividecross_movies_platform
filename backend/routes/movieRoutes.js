@@ -44,6 +44,16 @@ router.get("/search-history", auth, movieController.getUserSearchHistory);
 router.delete("/search-history/:id", auth, movieController.deleteSearchKeyword);
 router.delete("/search-history", auth, movieController.clearSearchHistory);
 
+// 👍 Movie Engagement routes (likes, shares)
+router.get("/engagement/:movieId", movieController.getMovieEngagement);
+router.post("/engagement/:movieId/like", auth, movieController.toggleLike);
+router.post("/engagement/:movieId/share", movieController.incrementShare);
+
+// 💬 Comments routes
+router.get("/comments/:movieId", movieController.getComments);
+router.post("/comments/:movieId", auth, movieController.addComment);
+router.delete("/comments/:commentId", auth, movieController.deleteComment);
+
 // 🔥 Trending movies
 router.get("/trending", movieController.getTrendingMovies);
 

@@ -219,25 +219,25 @@ export default function CheckoutPage() {
   if (loading) return <Loader />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white py-6 sm:py-8 md:py-12 px-4 sm:px-6">
       <div className="container mx-auto max-w-2xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-8"
         >
-          <h1 className="text-4xl font-bold mb-6 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
             Complete Your {type === 'subscription' ? 'Subscription' : 'Purchase'}
           </h1>
 
           {itemDetails && (
             <div className="mb-8">
               <div className="bg-black/30 rounded-xl p-6 border border-gray-700">
-                <h3 className="text-2xl font-bold mb-2">
+                <h3 className="text-xl sm:text-2xl font-bold mb-2">
                   {type === 'subscription' ? itemDetails.name + ' Plan' : itemDetails.title}
                 </h3>
                 <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-4xl font-black text-green-400">
+                  <span className="text-3xl sm:text-4xl font-black text-green-400">
                     ₹{type === 'subscription' ? itemDetails.price : 49}
                   </span>
                   <span className="text-gray-400">
@@ -269,7 +269,7 @@ export default function CheckoutPage() {
             <button
               onClick={handlePayment}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white py-4 rounded-lg font-bold text-lg transition-all hover:scale-105 disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg transition-all hover:scale-105 disabled:opacity-50"
             >
               {loading ? "Processing..." : "Proceed to Payment"}
             </button>

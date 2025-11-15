@@ -14,6 +14,8 @@ const SearchHistory = require('../models/searchHistoryModel');
 const Watchlist = require('../models/watchlistModel');
 const ViewingHistory = require('../models/viewingHistoryModel');
 const Download = require('../models/downloadModel');
+const MovieEngagement = require('../models/movieEngagementModel');
+const Comment = require('../models/commentModel');
 
 exports.getAllMovies = async (req, res) => {
   try {
@@ -571,3 +573,198 @@ exports.clearSearchHistory = async (req, res) => {
     res.status(500).json({ message: "Error clearing search history", error: err.message });
   }
 };
+
+// Get movie engagement stats (likes, shares count)
+exports.getMovieEngagement = async (req, res) => {
+  try {
+    const { movieId } = req.params;
+    const userId = req.user?._id;
+    
+    let engagement = await MovieEngagement.findOne({ movieId });
+    
+    if (!engagement) {
+      engagement = await MovieEngagement.create({ movieId, likes: 0, shares: 0 });
+    }
+    
+    const hasLiked = userId ? engagement.likedBy.includes(userId) : false;
+    const hasShared = userId ? engagement.sharedBy.includes(userId) : false;
+    
+    res.json({
+      likes: engagement.likes,
+      shares: engagement.shares,
+      hasLiked,
+      hasShared
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching engagement", error: err.message });
+  }
+};
+
+// Toggle like on a movie
+exports.toggleLike = async (req, res) => {
+  try {
+    const { movieId } = req.params;
+    const userId = req.user._id;
+    
+    let engagement = await MovieEngagement.findOne({ movieId });
+    
+    if (!engagement) {
+      engagement = await MovieEngagement.create({ 
+        movieId, 
+        likes: 1, 
+        shares: 0,
+        likedBy: [userId]
+      });
+      return res.json({ 
+        likes: engagement.likes, 
+        hasLiked: true,
+        message: "Liked!" 
+      });
+    }
+    
+    const hasLiked = engagement.likedBy.includes(userId);
+    
+    if (hasLiked) {
+      // Unlike
+      engagement.likes = Math.max(0, engagement.likes - 1);
+      engagement.likedBy = engagement.likedBy.filter(id => !id.equals(userId));
+    } else {
+      // Like
+      engagement.likes += 1;
+      engagement.likedBy.push(userId);
+    }
+    
+    await engagement.save();
+    
+    res.json({ 
+      likes: engagement.likes, 
+      hasLiked: !hasLiked,
+      message: hasLiked ? "Unliked" : "Liked!" 
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error toggling like", error: err.message });
+  }
+};
+
+// Increment share count
+exports.incrementShare = async (req, res) => {
+  try {
+    const { movieId } = req.params;
+    const userId = req.user?._id;
+    
+    let engagement = await MovieEngagement.findOne({ movieId });
+    
+    if (!engagement) {
+      engagement = await MovieEngagement.create({ 
+        movieId, 
+        likes: 0, 
+        shares: 1,
+        sharedBy: userId ? [userId] : []
+      });
+    } else {
+      engagement.shares += 1;
+      if (userId && !engagement.sharedBy.includes(userId)) {
+        engagement.sharedBy.push(userId);
+      }
+      await engagement.save();
+    }
+    
+    res.json({ 
+      shares: engagement.shares,
+      message: "Shared successfully!" 
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error incrementing share", error: err.message });
+  }
+};
+
+// Get comments for a movie
+exports.getComments = async (req, res) => {
+  try {
+    const { movieId } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+    
+    const comments = await Comment.find({ movieId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+    
+    const total = await Comment.countDocuments({ movieId });
+    
+    res.json({
+      comments,
+      total,
+      page,
+      pages: Math.ceil(total / limit)
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching comments", error: err.message });
+  }
+};
+
+// Add a comment
+exports.addComment = async (req, res) => {
+  try {
+    const { movieId } = req.params;
+    const { comment } = req.body;
+    const userId = req.user._id;
+    const username = req.user.username || req.user.name;
+    const userProfilePicture = req.user.profilePicture;
+    
+    if (!comment || comment.trim().length === 0) {
+      return res.status(400).json({ message: "Comment cannot be empty" });
+    }
+    
+    if (comment.length > 1000) {
+      return res.status(400).json({ message: "Comment too long (max 1000 characters)" });
+    }
+    
+    const newComment = await Comment.create({
+      movieId,
+      userId,
+      username,
+      userProfilePicture,
+      comment: comment.trim()
+    });
+    
+    res.status(201).json({
+      success: true,
+      comment: newComment,
+      message: "Comment added successfully"
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error adding comment", error: err.message });
+  }
+};
+
+// Delete a comment
+exports.deleteComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const userId = req.user._id;
+    
+    const comment = await Comment.findById(commentId);
+    
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+    
+    // Only allow user to delete their own comments
+    if (!comment.userId.equals(userId)) {
+      return res.status(403).json({ message: "Not authorized to delete this comment" });
+    }
+    
+    await Comment.findByIdAndDelete(commentId);
+    
+    res.json({ 
+      success: true, 
+      message: "Comment deleted successfully" 
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error deleting comment", error: err.message });
+  }
+};
+

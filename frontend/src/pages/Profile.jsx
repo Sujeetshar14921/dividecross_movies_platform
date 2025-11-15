@@ -136,7 +136,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white py-12 px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white py-6 sm:py-8 md:py-12 px-4 sm:px-6 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -165,9 +165,9 @@ const Profile = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/10 mb-6"
+          className="bg-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl border border-white/10 mb-4 sm:mb-6"
         >
-          <div className="flex flex-col md:flex-row items-center gap-6">
+          <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6">
             {/* Profile Picture */}
             <motion.div
               initial={{ scale: 0.9 }}
@@ -175,7 +175,7 @@ const Profile = () => {
               transition={{ duration: 0.5 }}
               className="relative group"
             >
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-red-500 to-pink-500 p-1 shadow-lg shadow-red-500/50">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-red-500 to-pink-500 p-1 shadow-lg shadow-red-500/50">
                 <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
                   {userData.profilePicture ? (
                     <img 
@@ -184,7 +184,7 @@ const Profile = () => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-5xl font-bold">
+                    <span className="text-3xl sm:text-4xl md:text-5xl font-bold">
                       {userData.name?.charAt(0)?.toUpperCase() || "U"}
                     </span>
                   )}
@@ -215,14 +215,14 @@ const Profile = () => {
                 {userData.name || "User"}
               </h1>
               {userData.username && (
-                <p className="text-gray-400 mb-1">@{userData.username}</p>
+                <p className="text-sm sm:text-base text-gray-400 mb-1">@{userData.username}</p>
               )}
-              <p className="text-gray-400 mb-1 flex items-center justify-center md:justify-start gap-2">
+              <p className="text-sm sm:text-base text-gray-400 mb-1 flex items-center justify-center md:justify-start gap-2 flex-wrap">
                 <FaEnvelope className="text-red-500" />
-                {userData.email}
+                <span className="break-all">{userData.email}</span>
               </p>
               {userData.bio && (
-                <p className="text-gray-300 mt-3 italic">"{userData.bio}"</p>
+                <p className="text-sm sm:text-base text-gray-300 mt-3 italic">"{userData.bio}"</p>
               )}
             </div>
 
@@ -232,7 +232,7 @@ const Profile = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsEditing(true)}
-                className="bg-gradient-to-r from-red-600 to-pink-600 px-6 py-3 rounded-xl font-bold shadow-lg shadow-red-500/50 hover:shadow-red-500/70 transition-all flex items-center gap-2"
+                className="bg-gradient-to-r from-red-600 to-pink-600 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-bold shadow-lg shadow-red-500/50 hover:shadow-red-500/70 transition-all flex items-center gap-2 text-sm sm:text-base"
               >
                 <FaEdit />
                 Edit Profile

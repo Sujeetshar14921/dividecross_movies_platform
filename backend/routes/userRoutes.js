@@ -5,6 +5,7 @@ const { getUserProfile, updateUserProfile } = require("../controllers/userContro
 
 // ✅ Get current user profile
 router.get("/me", verifyToken, getUserProfile);
+router.get("/profile", verifyToken, getUserProfile);
 
 // ✅ Update user profile
 router.put("/update-profile", verifyToken, updateUserProfile);

@@ -30,34 +30,32 @@ export default function Recommendations() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white">
       {/* Hero Header */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-red-600/20 blur-3xl"></div>
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
+            <div className="relative z-10 bg-gradient-to-b from-black/80 to-transparent py-8 sm:py-12 md:py-16">
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative container mx-auto px-6 py-12"
+          transition={{ duration: 0.6 }}
+          className="container mx-auto px-4 sm:px-6"
         >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-2 h-16 bg-gradient-to-b from-purple-500 via-pink-500 to-red-500 rounded-full"></div>
-            <h1 className="text-6xl font-black bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl">
+          <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <div className="w-1.5 sm:w-2 h-12 sm:h-16 bg-gradient-to-b from-purple-500 via-pink-500 to-red-500 rounded-full"></div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl">
               Recommended For You
             </h1>
           </div>
-          <p className="text-gray-400 text-lg font-light ml-6">
+          <p className="text-gray-400 text-sm sm:text-base md:text-lg font-light ml-5 sm:ml-6">
             Trending movies picked just for you
           </p>
-        </motion.div>
-      </div>
 
       {/* Movies Grid */}
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
           {data.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
               {data.map((movie, index) => (
                 <motion.div
                   key={movie._id || movie.id || index}

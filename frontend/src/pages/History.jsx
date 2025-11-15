@@ -110,7 +110,7 @@ const History = () => {
               <p className="text-gray-500">No search history yet</p>
             </motion.div>
           ) : (
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               {searchHistory.map((item, index) => (
                 <motion.div
                   key={item._id}

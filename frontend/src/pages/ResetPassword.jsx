@@ -20,7 +20,7 @@ export default function ResetPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      await API.post("/api/auth/reset-password-otp", {
+      await API.post("/api/auth/verify-reset-otp", {
         email,
         otp,
         newPassword,

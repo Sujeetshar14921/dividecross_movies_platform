@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { FaEnvelope, FaLock, FaFilm } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
 import API from "../api/axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function LoginUser() {
   const [email, setEmail] = useState("");
@@ -14,24 +16,25 @@ export default function LoginUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
     setLoading(true);
     try {
-      const res = await API.post("/api/auth/login", {
-        email,
-        password,
-      });
+      const res = await API.post("/api/auth/login", { email, password });
 
-      // Save token + role
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.role);
       
-      // Update AuthContext
       login(res.data.token);
-
-      // Navigate to home for all users
+      toast.success("Login successful! Welcome back.");
       navigate("/");
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      const errorMsg = err.response?.data?.message || "Login failed. Please try again.";
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }

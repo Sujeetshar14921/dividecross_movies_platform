@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const movieController = require("../controllers/movieController");
-const auth = require("../middlewares/auth");
+const { verifyToken } = require("../middlewares/auth");
 
 // ⚡ Live Search Suggestions
 router.get("/suggestions", movieController.getSuggestions);
@@ -22,37 +22,37 @@ router.get("/recently-added", movieController.getRecentlyAdded);
 router.get("/personalized", movieController.getPersonalizedRecommendations);
 
 // 📊 Track user activity
-router.post("/track-activity", auth, movieController.trackActivity);
+router.post("/track-activity", verifyToken, movieController.trackActivity);
 
 // 📑 Watchlist routes
-router.post("/watchlist", auth, movieController.addToWatchlist);
-router.delete("/watchlist/:movieId", auth, movieController.removeFromWatchlist);
-router.get("/watchlist", auth, movieController.getWatchlist);
+router.post("/watchlist", verifyToken, movieController.addToWatchlist);
+router.delete("/watchlist/:movieId", verifyToken, movieController.removeFromWatchlist);
+router.get("/watchlist", verifyToken, movieController.getWatchlist);
 
 // 📜 Viewing History routes
-router.post("/history", auth, movieController.addToHistory);
-router.get("/history", auth, movieController.getViewingHistory);
-router.delete("/history", auth, movieController.clearHistory);
+router.post("/history", verifyToken, movieController.addToHistory);
+router.get("/history", verifyToken, movieController.getViewingHistory);
+router.delete("/history", verifyToken, movieController.clearHistory);
 
 // 💾 Downloads routes
-router.post("/downloads", auth, movieController.addDownload);
-router.get("/downloads", auth, movieController.getDownloads);
-router.delete("/downloads/:movieId", auth, movieController.removeDownload);
+router.post("/downloads", verifyToken, movieController.addDownload);
+router.get("/downloads", verifyToken, movieController.getDownloads);
+router.delete("/downloads/:movieId", verifyToken, movieController.removeDownload);
 
 // 🔍 Search History routes
-router.get("/search-history", auth, movieController.getUserSearchHistory);
-router.delete("/search-history/:id", auth, movieController.deleteSearchKeyword);
-router.delete("/search-history", auth, movieController.clearSearchHistory);
+router.get("/search-history", verifyToken, movieController.getUserSearchHistory);
+router.delete("/search-history/:id", verifyToken, movieController.deleteSearchKeyword);
+router.delete("/search-history", verifyToken, movieController.clearSearchHistory);
 
 // 👍 Movie Engagement routes (likes, shares)
 router.get("/engagement/:movieId", movieController.getMovieEngagement);
-router.post("/engagement/:movieId/like", auth, movieController.toggleLike);
+router.post("/engagement/:movieId/like", verifyToken, movieController.toggleLike);
 router.post("/engagement/:movieId/share", movieController.incrementShare);
 
 // 💬 Comments routes
 router.get("/comments/:movieId", movieController.getComments);
-router.post("/comments/:movieId", auth, movieController.addComment);
-router.delete("/comments/:commentId", auth, movieController.deleteComment);
+router.post("/comments/:movieId", verifyToken, movieController.addComment);
+router.delete("/comments/:commentId", verifyToken, movieController.deleteComment);
 
 // 🔥 Trending movies
 router.get("/trending", movieController.getTrendingMovies);

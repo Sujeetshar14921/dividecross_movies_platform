@@ -1,5 +1,5 @@
 const SupportTicket = require("../models/supportTicketModel");
-const { sendSupportTicketEmail } = require("../services/emailService");
+const { sendSupportTicketEmail } = require("../services/supportService");
 
 /**
  * 📩 Submit support ticket

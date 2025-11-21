@@ -19,7 +19,7 @@ const Downloads = () => {
       const response = await API.get("/api/movies/downloads");
       setDownloads(response.data.downloads || []);
     } catch (err) {
-      console.error("Error fetching downloads:", err);
+      // Error fetching downloads
     } finally {
       setLoading(false);
     }
@@ -31,7 +31,7 @@ const Downloads = () => {
         await API.delete(`/api/movies/downloads/${movieId}`);
         setDownloads(downloads.filter(item => item.movieId !== movieId));
       } catch (err) {
-        console.error("Error removing download:", err);
+        // Error removing download
       }
     }
   };
@@ -75,7 +75,7 @@ const Downloads = () => {
             <p className="text-gray-500">Download movies to watch offline</p>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {downloads.map((item, index) => {
               const daysLeft = calculateDaysLeft(item.expiresAt);
               return (

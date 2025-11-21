@@ -1,20 +1,21 @@
 const express = require("express");
 const router = express.Router();
 
-// ✅ Import all controller functions
 const {
   register,
   login,
   verifyOtp,
   requestResetOtp,
-  resetPasswordOtp,
+  verifyOtpAndResetPassword,
+  resetPassword,
 } = require("../controllers/authController");
 
-// ✅ Define routes
-router.post("/register", register); // Registration + OTP send
-router.post("/login", login); // Login (only if verified)
-router.post("/verify-otp", verifyOtp); // Verify registration OTP
-router.post("/request-reset-otp", requestResetOtp); // Forgot password OTP
-router.post("/reset-password-otp", resetPasswordOtp); // Reset password using OTP
+// Auth routes
+router.post("/register", register);
+router.post("/login", login);
+router.post("/verify-otp", verifyOtp);
+router.post("/request-reset-otp", requestResetOtp);
+router.post("/verify-reset-otp", verifyOtpAndResetPassword);
+router.post("/reset-password", resetPassword); // Deprecated, kept for backward compatibility
 
 module.exports = router;

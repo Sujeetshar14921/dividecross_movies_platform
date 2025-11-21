@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
 import { motion } from "framer-motion";
 import { FaUser, FaEnvelope, FaLock, FaFilm } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -19,13 +21,25 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!formData.name || !formData.email || !formData.password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await API.post("/api/auth/register", formData);
-      alert(res.data.message || "OTP sent to your email!");
+      toast.success(res.data.message || "OTP sent to your email!");
       navigate("/otp-verify", { state: { email: formData.email } });
     } catch (err) {
-      alert(err.response?.data?.message || "Registration failed");
+      const errorMsg = err.response?.data?.message || "Registration failed. Please try again.";
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }

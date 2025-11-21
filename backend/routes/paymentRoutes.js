@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const paymentController = require("../controllers/paymentController");
-const protect = require("../middlewares/auth");
+const { verifyToken } = require("../middlewares/auth");
 
 // 🧪 Debug middleware to log all payment route requests
 router.use((req, res, next) => {
@@ -14,14 +14,11 @@ router.use((req, res, next) => {
 // 📋 Get all subscription plans (public)
 router.get("/plans", paymentController.getSubscriptionPlans);
 
-// Protected routes (require authentication)
-router.use(protect);
-
-// 💳 Subscription routes
-router.post("/subscription/create-order", paymentController.createSubscriptionOrder);
-router.post("/subscription/verify", paymentController.verifySubscriptionPayment);
-router.get("/subscription/current", paymentController.getUserSubscription);
-router.post("/subscription/cancel", paymentController.cancelSubscription);
+// 💳 Subscription routes (require authentication)
+router.post("/subscription/create-order", verifyToken, paymentController.createSubscriptionOrder);
+router.post("/subscription/verify", verifyToken, paymentController.verifySubscriptionPayment);
+router.get("/subscription/current", verifyToken, paymentController.getUserSubscription);
+router.post("/subscription/cancel", verifyToken, paymentController.cancelSubscription);
 
 // 🎬 Movie purchase routes
 router.post("/movie/create-order", paymentController.createMoviePurchaseOrder);

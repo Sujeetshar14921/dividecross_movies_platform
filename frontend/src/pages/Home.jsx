@@ -2,13 +2,12 @@ import React, { useEffect, useState, useCallback } from "react";
 import SearchBar from "../components/SearchBar";
 import FeaturedMovies from "../components/FeaturedMovies";
 import API from "../api/axios";
-import Loader from "../components/Loader";
 
 const Home = React.memo(() => {
   const [movies, setMovies] = useState([]);
   const [mostSearched, setMostSearched] = useState([]);
   const [recentMovies, setRecentMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState("featured");
   const [error, setError] = useState(null);
 
@@ -17,14 +16,12 @@ const Home = React.memo(() => {
     setError(null);
     
     try {
-      // Parallel fetch with individual error handling
       const [personalizedRes, mostSearchedRes, recentlyAddedRes] = await Promise.allSettled([
         API.get("/api/movies/personalized").catch(() => API.get("/api/movies/trending")),
         API.get("/api/movies/most-searched").catch(() => API.get("/api/movies/top-rated")),
         API.get("/api/movies/recently-added").catch(() => API.get("/api/movies/now-playing"))
       ]);
       
-      // Extract data with fallbacks
       const personalizedMovies = personalizedRes.status === 'fulfilled' 
         ? (personalizedRes.value?.data?.movies || []) 
         : [];
@@ -37,7 +34,6 @@ const Home = React.memo(() => {
         ? (recentlyAddedRes.value?.data?.movies || [])
         : [];
       
-      // If all failed, fetch popular movies as ultimate fallback
       if (personalizedMovies.length === 0 && mostSearchedMovies.length === 0 && recentMoviesData.length === 0) {
         const fallbackRes = await API.get("/api/movies");
         const fallbackMovies = fallbackRes.data?.movies || [];
@@ -50,7 +46,6 @@ const Home = React.memo(() => {
         setRecentMovies(recentMoviesData);
       }
     } catch (err) {
-      console.error("Error fetching movies:", err);
       setError("Failed to load movies. Please refresh the page.");
     } finally {
       setLoading(false);
@@ -80,9 +75,6 @@ const Home = React.memo(() => {
       setActiveCategory("featured");
     }
   }, [fetchMovies]);
-
-  // Show loader on initial load
-  if (loading && movies.length === 0) return <Loader />;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white">

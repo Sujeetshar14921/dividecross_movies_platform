@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Comment = require("../models/commentModel");
 const MovieInteraction = require("../models/movieInteractionModel");
-const { verifyToken } = require("../middlewares/authMiddleware");
+const { verifyToken } = require("../middlewares/auth");
 
 // Get all comments for a movie
 router.get("/:movieId", async (req, res) => {

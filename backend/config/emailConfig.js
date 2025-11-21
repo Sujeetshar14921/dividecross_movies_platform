@@ -1,31 +1,32 @@
 const nodemailer = require('nodemailer');
 
 async function verifyEmailConfig() {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.log('⚠️ Email configuration not found - Email features will be disabled');
+  if (!process.env.BREVO_EMAIL || !process.env.BREVO_SMTP_KEY) {
+    console.log('⚠️  Brevo email configuration not found - Email features will be disabled');
+    console.log('💡 Add BREVO_EMAIL and BREVO_SMTP_KEY to .env to enable emails');
     return;
   }
 
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.EMAIL_PORT) || 587,
+      host: "smtp-relay.brevo.com",
+      port: 587,
       secure: false,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      },
-      tls: {
-        rejectUnauthorized: false,
+        user: process.env.BREVO_EMAIL,
+        pass: process.env.BREVO_SMTP_KEY
       },
       connectionTimeout: 10000,
     });
 
     await transporter.verify();
-    console.log('✅ SMTP Server ready to send emails via port', process.env.EMAIL_PORT || 587);
+    console.log('✅ Brevo SMTP Server ready to send emails');
   } catch (error) {
-    console.log('⚠️ SMTP verification failed (emails may be delayed):', error.message);
-    console.log('💡 Emails will still be attempted when needed');
+    console.log('⚠️  Brevo SMTP verification failed:', error.message);
+    console.log('💡 To fix:');
+    console.log('   1. Get SMTP key from: https://app.brevo.com/settings/keys/smtp');
+    console.log('   2. Update BREVO_SMTP_KEY in .env file');
+    console.log('   3. OR use your Brevo account password as BREVO_SMTP_KEY');
   }
 }
 

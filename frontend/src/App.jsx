@@ -1,24 +1,27 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import Recommendations from "./pages/Recommendations";
-import Profile from "./pages/Profile";
-import MovieDetails from "./pages/MovieDetails";
-import About from "./pages/About";
-import SubscriptionPlans from "./pages/SubscriptionPlans";
-import CheckoutPage from "./pages/CheckoutPage";
-import Support from "./pages/Support";
-import Watchlist from "./pages/Watchlist";
-import History from "./pages/History";
-import Downloads from "./pages/Downloads";
+import { lazy } from "react";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import { ToastContainer } from "react-toastify";
-import OtpVerify from "./pages/OtpVerify";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import LoginUser from "./pages/LoginUser";
+
+// Lazy load pages for better performance
+const Home = lazy(() => import("./pages/Home"));
+const Register = lazy(() => import("./pages/Register"));
+const Recommendations = lazy(() => import("./pages/Recommendations"));
+const Profile = lazy(() => import("./pages/Profile"));
+const MovieDetails = lazy(() => import("./pages/MovieDetails"));
+const About = lazy(() => import("./pages/About"));
+const SubscriptionPlans = lazy(() => import("./pages/SubscriptionPlans"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const Support = lazy(() => import("./pages/Support"));
+const Watchlist = lazy(() => import("./pages/Watchlist"));
+const History = lazy(() => import("./pages/History"));
+const Downloads = lazy(() => import("./pages/Downloads"));
+const OtpVerify = lazy(() => import("./pages/OtpVerify"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const LoginUser = lazy(() => import("./pages/LoginUser"));
 
 export default function App() {
   return (
@@ -42,121 +45,121 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/about"
-          element={
-            <ProtectedRoute>
-              <About />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/movie/:id"
-          element={
-            <ProtectedRoute>
-              <MovieDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/subscription"
-          element={
-            <ProtectedRoute>
-              <SubscriptionPlans />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/checkout/:type/:id"
-          element={
-            <ProtectedRoute>
-              <CheckoutPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/watchlist"
-          element={
-            <ProtectedRoute>
-              <Watchlist />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/history"
-          element={
-            <ProtectedRoute>
-              <History />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/downloads"
-          element={
-            <ProtectedRoute>
-              <Downloads />
-            </ProtectedRoute>
-          }
-        />
-        
-        {/* Support Page - Public */}
-        <Route path="/support" element={<Support />} />
+          <Route
+            path="/about"
+            element={
+              <ProtectedRoute>
+                <About />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/movie/:id"
+            element={
+              <ProtectedRoute>
+                <MovieDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/subscription"
+            element={
+              <ProtectedRoute>
+                <SubscriptionPlans />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout/:type/:id"
+            element={
+              <ProtectedRoute>
+                <CheckoutPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/watchlist"
+            element={
+              <ProtectedRoute>
+                <Watchlist />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute>
+                <History />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/downloads"
+            element={
+              <ProtectedRoute>
+                <Downloads />
+              </ProtectedRoute>
+            }
+          />
+          
+          {/* Support Page - Public */}
+          <Route path="/support" element={<Support />} />
 
-        {/* Public Routes - Redirect to home if logged in */}
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/otp-verify"
-          element={
-            <PublicRoute>
-              <OtpVerify />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <LoginUser />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/forgot-password"
-          element={
-            <PublicRoute>
-              <ForgotPassword />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/reset-password"
-          element={
-            <PublicRoute>
-              <ResetPassword />
-            </PublicRoute>
-          }
-        />
+          {/* Public Routes - Redirect to home if logged in */}
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/otp-verify"
+            element={
+              <PublicRoute>
+                <OtpVerify />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginUser />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <PublicRoute>
+                <ForgotPassword />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <PublicRoute>
+                <ResetPassword />
+              </PublicRoute>
+            }
+          />
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
 
-      <ToastContainer position="top-right" />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 }

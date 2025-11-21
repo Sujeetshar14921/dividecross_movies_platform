@@ -1,39 +1,104 @@
 const axios = require('axios');
+const axiosRetry = require('axios-retry').default || require('axios-retry');
+const dns = require('dns');
+const https = require('https');
+const http = require('http');
+const { HttpsProxyAgent } = require('https-proxy-agent');
+// Set DNS to use Google DNS to avoid DNS resolution issues
+dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-// Robust axios instance with retry logic
+// Configure proxy if environment variables are set
+const proxyUrl = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
+const httpsAgent = proxyUrl 
+  ? new HttpsProxyAgent(proxyUrl)
+  : new https.Agent({
+      keepAlive: true,
+      maxSockets: 100,
+      rejectUnauthorized: false,
+      timeout: 30000,
+      family: 4 // Force IPv4
+    });
+
+const httpAgent = new http.Agent({
+  keepAlive: true,
+  maxSockets: 100,
+  timeout: 30000,
+  family: 4
+});
+
+console.log(proxyUrl ? `🌐 Using proxy: ${proxyUrl}` : '🌐 Direct connection to TMDB');
+
+// Robust axios instance with retry logic and extended timeout
 const api = axios.create({
   baseURL: TMDB_BASE_URL,
-  timeout: 15000, // 15 seconds timeout
+  timeout: 30000, // 30 seconds for slow networks
   params: { api_key: TMDB_API_KEY },
   headers: {
     'Accept': 'application/json',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+    'Accept-Encoding': 'gzip, deflate'
+  },
+  httpsAgent: httpsAgent,
+  httpAgent: httpAgent,
+  maxRedirects: 5,
+  validateStatus: (status) => status < 500
+});
+
+// Configure axios-retry for automatic retries
+axiosRetry(api, {
+  retries: 5, // More retries for unreliable networks
+  retryDelay: (retryCount) => {
+    return retryCount * 2000; // 2s, 4s, 6s, 8s, 10s delay
+  },
+  retryCondition: (error) => {
+    // Retry on network errors, timeouts, and 5xx errors
+    return axiosRetry.isNetworkOrIdempotentRequestError(error) || 
+           error.code === 'ECONNABORTED' ||
+           error.code === 'ETIMEDOUT' ||
+           error.code === 'ENOTFOUND' ||
+           error.code === 'ECONNRESET' ||
+           error.code === 'EHOSTUNREACH' ||
+           (error.response && error.response.status >= 500);
+  },
+  onRetry: (retryCount, error, requestConfig) => {
+    console.log(`🔄 Retry attempt ${retryCount} for ${requestConfig.url}`);
   }
 });
 
-// Retry interceptor for failed requests
-api.interceptors.response.use(
-  response => response,
-  async error => {
-    const config = error.config;
-    if (!config || !config.retry) {
-      config.retry = 0;
+// HTTP fallback function for when HTTPS fails
+async function fetchWithFallback(endpoint, params = {}) {
+  try {
+    // Try HTTPS first
+    const response = await api.get(endpoint, { params });
+    return response.data;
+  } catch (httpsError) {
+    console.log(`⚠️ HTTPS failed, trying HTTP fallback...`);
+    try {
+      // Fallback to HTTP
+      const httpApi = axios.create({
+        baseURL: 'http://api.themoviedb.org/3',
+        timeout: 30000,
+        params: { api_key: TMDB_API_KEY },
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0'
+        },
+        httpAgent: httpAgent
+      });
+      const response = await httpApi.get(endpoint, { params });
+      console.log(`✅ HTTP fallback successful`);
+      return response.data;
+    } catch (httpError) {
+      console.error(`❌ Both HTTPS and HTTP failed`);
+      throw httpsError; // Throw original error
     }
-    
-    // Retry up to 3 times
-    if (config.retry < 3) {
-      config.retry += 1;
-      await new Promise(resolve => setTimeout(resolve, 1000 * config.retry)); // Exponential backoff
-      return api(config);
-    }
-    
-    return Promise.reject(error);
   }
-);
+}
 
 // Helper to format movie data
 const formatMovie = (movie) => ({
@@ -55,7 +120,9 @@ const formatMovie = (movie) => ({
 
 async function getPopularMovies(page = 1) {
   try {
-    const { data } = await api.get('/movie/popular', { params: { page } });
+    console.log(`🎬 Fetching popular movies (page ${page}) from TMDB...`);
+    const data = await fetchWithFallback('/movie/popular', { page });
+    console.log(`✅ Successfully fetched ${data.results.length} popular movies`);
     return {
       movies: data.results.map(formatMovie),
       page: data.page,
@@ -63,61 +130,73 @@ async function getPopularMovies(page = 1) {
       totalResults: data.total_results
     };
   } catch (error) {
-    console.error('TMDB Popular Movies Error:', error.message);
-    // Return empty but valid structure
-    return { movies: [], page: 1, totalPages: 0, totalResults: 0 };
+    console.error('❌ TMDB Popular Movies Error:', error.message);
+    if (error.code) console.error('   Error Code:', error.code);
+    throw error;
   }
 }
 
 async function getTrendingMovies(timeWindow = 'week') {
   try {
-    const { data } = await api.get(`/trending/movie/${timeWindow}`);
+    console.log(`🎬 Fetching trending movies (${timeWindow})...`);
+    const data = await fetchWithFallback(`/trending/movie/${timeWindow}`);
+    console.log(`✅ Successfully fetched ${data.results.length} trending movies`);
     return data.results.map(formatMovie);
   } catch (error) {
-    console.error('TMDB Trending Error:', error.message);
-    return [];
+    console.error('❌ TMDB Trending Error:', error.message);
+    if (error.code) console.error('   Error Code:', error.code);
+    throw error;
   }
 }
 
 async function getTopRatedMovies(page = 1) {
   try {
-    const { data } = await api.get('/movie/top_rated', { params: { page } });
+    console.log(`🎬 Fetching top rated movies (page ${page})...`);
+    const data = await fetchWithFallback('/movie/top_rated', { page });
+    console.log(`✅ Successfully fetched ${data.results.length} top rated movies`);
     return {
       movies: data.results.map(formatMovie),
       page: data.page,
       totalPages: data.total_pages
     };
   } catch (error) {
-    console.error('TMDB Top Rated Error:', error.message);
-    return { movies: [], page: 1, totalPages: 0 };
+    console.error('❌ TMDB Top Rated Error:', error.message);
+    if (error.code) console.error('   Error Code:', error.code);
+    throw error;
   }
 }
 
 async function getNowPlayingMovies(page = 1) {
   try {
-    const { data } = await api.get('/movie/now_playing', { params: { page } });
+    console.log(`🎬 Fetching now playing movies (page ${page})...`);
+    const data = await fetchWithFallback('/movie/now_playing', { page });
+    console.log(`✅ Successfully fetched ${data.results.length} now playing movies`);
     return {
       movies: data.results.map(formatMovie),
       page: data.page,
       totalPages: data.total_pages
     };
   } catch (error) {
-    console.error('TMDB Now Playing Error:', error.message);
-    return { movies: [], page: 1, totalPages: 0 };
+    console.error('❌ TMDB Now Playing Error:', error.message);
+    if (error.code) console.error('   Error Code:', error.code);
+    throw error;
   }
 }
 
 async function getUpcomingMovies(page = 1) {
   try {
-    const { data } = await api.get('/movie/upcoming', { params: { page } });
+    console.log(`🎬 Fetching upcoming movies (page ${page})...`);
+    const data = await fetchWithFallback('/movie/upcoming', { page });
+    console.log(`✅ Successfully fetched ${data.results.length} upcoming movies`);
     return {
       movies: data.results.map(formatMovie),
       page: data.page,
       totalPages: data.total_pages
     };
   } catch (error) {
-    console.error('TMDB Upcoming Error:', error.message);
-    return { movies: [], page: 1, totalPages: 0 };
+    console.error('❌ TMDB Upcoming Error:', error.message);
+    if (error.code) console.error('   Error Code:', error.code);
+    throw error;
   }
 }
 

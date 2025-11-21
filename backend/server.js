@@ -6,6 +6,7 @@ const { verifyEmailConfig } = require("./config/emailConfig");
 
 const tmdbRoutes = require("./routes/tmdbRoutes");
 const authRoutes = require("./routes/authRoutes");
+const otpRoutes = require("./routes/otpRoutes");
 const userRoutes = require("./routes/userRoutes");
 const movieRoutes = require("./routes/movieRoutes");
 const recommendRoutes = require("./routes/recommendRoutes");
@@ -53,6 +54,7 @@ mongoose
 
 app.use("/api/tmdb", tmdbRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/otp", otpRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/movies", movieRoutes);
 app.use("/api/recommendations", recommendRoutes);

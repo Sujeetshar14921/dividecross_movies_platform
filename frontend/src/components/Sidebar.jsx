@@ -6,15 +6,10 @@ import {
   FaHeadset, 
   FaBookmark, 
   FaHistory, 
-  FaCog, 
   FaDownload,
-  FaUser,
   FaSignOutAlt,
   FaHome,
   FaInfoCircle,
-  FaBell,
-  FaGift,
-  FaLanguage,
   FaChevronRight
 } from "react-icons/fa";
 import { useContext } from "react";
@@ -60,26 +55,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       icon: FaDownload, 
       label: "Downloads", 
       path: "/downloads", 
-      color: "from-green-500 to-emerald-500",
-      badge: "New"
-    },
-    { 
-      icon: FaBell, 
-      label: "Notifications", 
-      path: "/notifications", 
-      color: "from-red-500 to-pink-500" 
-    },
-    { 
-      icon: FaGift, 
-      label: "Offers & Rewards", 
-      path: "/offers", 
-      color: "from-amber-500 to-yellow-500" 
-    },
-    { 
-      icon: FaLanguage, 
-      label: "Language Settings", 
-      path: "/language", 
-      color: "from-teal-500 to-cyan-500" 
+      color: "from-green-500 to-emerald-500"
     },
     { 
       icon: FaHeadset, 
@@ -92,12 +68,6 @@ const Sidebar = ({ isOpen, onClose }) => {
       label: "About", 
       path: "/about", 
       color: "from-gray-500 to-slate-500" 
-    },
-    { 
-      icon: FaCog, 
-      label: "Settings", 
-      path: "/settings", 
-      color: "from-slate-500 to-gray-500" 
     },
   ];
 
@@ -156,40 +126,25 @@ const Sidebar = ({ isOpen, onClose }) => {
                 className="bg-gray-800/40 backdrop-blur-md rounded-xl p-2.5 sm:p-3 cursor-pointer hover:bg-gray-800/60 transition-all duration-300 border border-white/10"
               >
                 <div className="flex items-center gap-2.5 sm:gap-3">
-                  {user ? (
-                    <>
-                      <div className="relative">
-                        {user.profilePicture ? (
-                          <img 
-                            src={user.profilePicture} 
-                            alt={user.username || user.name}
-                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-white/30 shadow-lg"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-red-500 via-pink-500 to-red-600 flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-lg border-2 border-white/30">
-                            {(user.username || user.name || user.email)?.charAt(0).toUpperCase()}
-                          </div>
-                        )}
-                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-green-400 rounded-full border-2 border-gray-900"></div>
+                  <div className="relative">
+                    {user?.profilePicture ? (
+                      <img 
+                        src={user.profilePicture} 
+                        alt={user.username || user.name}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-white/30 shadow-lg"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-red-500 via-pink-500 to-red-600 flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-lg border-2 border-white/30">
+                        {(user?.username || user?.name || user?.email)?.charAt(0).toUpperCase() || 'U'}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-white font-bold text-sm sm:text-base truncate">{user.username || user.name || "User"}</h3>
-                        <p className="text-purple-100 text-[10px] sm:text-xs truncate opacity-80">{user.email}</p>
-                      </div>
-                      <FaChevronRight className="text-white/60 text-xs flex-shrink-0" />
-                    </>
-                  ) : (
-                    <>
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-white border-2 border-white/30">
-                        <FaUser className="text-lg sm:text-xl" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-sm sm:text-base">Guest</h3>
-                        <p className="text-purple-100 text-[10px] sm:text-xs opacity-80">Sign in</p>
-                      </div>
-                      <FaChevronRight className="text-white/60 text-xs" />
-                    </>
-                  )}
+                    )}
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-green-400 rounded-full border-2 border-gray-900"></div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-white font-bold text-sm sm:text-base truncate">{user?.username || user?.name || "User"}</h3>
+                    <p className="text-purple-100 text-[10px] sm:text-xs truncate opacity-80">{user?.email || "Loading..."}</p>
+                  </div>
+                  <FaChevronRight className="text-white/60 text-xs flex-shrink-0" />
                 </div>
               </motion.div>
             </div>
@@ -273,39 +228,22 @@ const Sidebar = ({ isOpen, onClose }) => {
               ))}
             </div>
 
-            {/* Bottom Section - Fixed with minimalist design */}
+            {/* Bottom Section - Fixed Logout Button */}
             <div className="flex-shrink-0 bg-gray-900/95 backdrop-blur-md p-2.5 sm:p-3 border-t border-gray-700/30">
-              {user ? (
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleLogout();
-                  }}
-                  className="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-semibold py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg sm:rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-red-500/30 transition-all duration-300 cursor-pointer text-sm sm:text-base"
-                  style={{ userSelect: 'none' }}
-                >
-                  <FaSignOutAlt className="text-sm sm:text-base" />
-                  <span>Logout</span>
-                </motion.button>
-              ) : (
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleNavigation("/login");
-                  }}
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-purple-500/30 transition-all duration-300 cursor-pointer"
-                  style={{ userSelect: 'none' }}
-                >
-                  <FaUser className="text-base" />
-                  <span>Sign In</span>
-                </motion.button>
-              )}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleLogout();
+                }}
+                className="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-semibold py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg sm:rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-red-500/30 transition-all duration-300 cursor-pointer text-sm sm:text-base"
+                style={{ userSelect: 'none' }}
+              >
+                <FaSignOutAlt className="text-sm sm:text-base" />
+                <span>Sign Out</span>
+              </motion.button>
 
               {/* App Version - Compact */}
               <div className="text-center mt-2 text-gray-500 text-xs">

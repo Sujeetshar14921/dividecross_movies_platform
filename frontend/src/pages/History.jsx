@@ -21,7 +21,7 @@ const History = () => {
       const response = await API.get("/api/movies/history");
       setHistory(response.data.history || []);
     } catch (err) {
-      console.error("Error fetching history:", err);
+      // Error fetching history
     } finally {
       setLoading(false);
     }
@@ -32,7 +32,7 @@ const History = () => {
       const response = await API.get("/api/movies/search-history");
       setSearchHistory(response.data.searchHistory || []);
     } catch (err) {
-      console.error("Error fetching search history:", err);
+      // Error fetching search history
     }
   };
 
@@ -42,7 +42,7 @@ const History = () => {
         await API.delete("/api/movies/history");
         setHistory([]);
       } catch (err) {
-        console.error("Error clearing history:", err);
+        // Error clearing history
       }
     }
   };
@@ -53,7 +53,7 @@ const History = () => {
         await API.delete("/api/movies/search-history");
         setSearchHistory([]);
       } catch (err) {
-        console.error("Error clearing search history:", err);
+        // Error clearing search history
       }
     }
   };
@@ -63,7 +63,7 @@ const History = () => {
       await API.delete(`/api/movies/search-history/${id}`);
       setSearchHistory(searchHistory.filter(item => item._id !== id));
     } catch (err) {
-      console.error("Error deleting search keyword:", err);
+      // Error deleting search keyword
     }
   };
 
@@ -110,7 +110,7 @@ const History = () => {
               <p className="text-gray-500">No search history yet</p>
             </motion.div>
           ) : (
-            <div className="flex flex-wrap gap-2 sm:gap-3">
+            <div className="flex flex-wrap gap-3">
               {searchHistory.map((item, index) => (
                 <motion.div
                   key={item._id}

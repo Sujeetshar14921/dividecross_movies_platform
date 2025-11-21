@@ -19,7 +19,7 @@ const Watchlist = () => {
       const response = await API.get("/api/movies/watchlist");
       setWatchlist(response.data.watchlist || []);
     } catch (err) {
-      console.error("Error fetching watchlist:", err);
+      // Error fetching watchlist
     } finally {
       setLoading(false);
     }
@@ -30,7 +30,7 @@ const Watchlist = () => {
       await API.delete(`/api/movies/watchlist/${movieId}`);
       setWatchlist(watchlist.filter(item => item.movieId !== movieId));
     } catch (err) {
-      console.error("Error removing from watchlist:", err);
+      // Error removing from watchlist
     }
   };
 
@@ -59,14 +59,14 @@ const Watchlist = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-12 sm:py-16 md:py-20"
+            className="text-center py-20"
           >
-            <FaBookmark className="text-4xl sm:text-5xl md:text-6xl text-gray-700 mx-auto mb-3 sm:mb-4" />
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-400 mb-2">Your watchlist is empty</h2>
-            <p className="text-sm sm:text-base text-gray-500">Start adding movies you want to watch later!</p>
+            <FaBookmark className="text-6xl text-gray-700 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-400 mb-2">Your watchlist is empty</h2>
+            <p className="text-gray-500">Start adding movies you want to watch later!</p>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {watchlist.map((item, index) => (
               <motion.div
                 key={item._id}

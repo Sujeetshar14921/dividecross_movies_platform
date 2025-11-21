@@ -522,7 +522,7 @@ export default function MovieDetails() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.9 }}
-            className="lg:col-span-2 space-y-6 sm:space-y-8">
+            className="lg:col-span-2 space-y-6 sm:space-y-8"
           >
             {/* Overview Card */}
             <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl overflow-hidden">

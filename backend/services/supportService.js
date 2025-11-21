@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 exports.sendSupportTicketEmail = async (email, ticketId, subject, message) => {
   try {
     const mailOptions = {
-      from: `"CineVerse Support" <${process.env.BREVO_EMAIL}>`,
+      from: `"DivideCross Support" <${process.env.BREVO_EMAIL}>`,
       to: email,
       subject: `Support Ticket #${ticketId} - ${subject}`,
       html: `
@@ -33,7 +33,7 @@ exports.sendSupportTicketEmail = async (email, ticketId, subject, message) => {
         <body>
           <div class="container">
             <div class="header">
-              <h1>🎬 CineVerse Support</h1>
+              <h1>DivideCross Support</h1>
             </div>
             
             <p>Hello,</p>
@@ -49,7 +49,7 @@ exports.sendSupportTicketEmail = async (email, ticketId, subject, message) => {
             <p>${message}</p>
             
             <div class="footer">
-              <p>© 2025 CineVerse. All rights reserved.</p>
+              <p>© 2025 DivideCross. All rights reserved.</p>
             </div>
           </div>
         </body>

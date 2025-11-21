@@ -108,7 +108,7 @@ exports.updateTicket = async (req, res) => {
       try {
         await sendEmail({
           to: ticket.email,
-          subject: `Response to Your Support Ticket - CineVerse`,
+          subject: `Response to Your Support Ticket - DivideCross`,
           html: `
             <h2>We've responded to your ticket</h2>
             <p>Hi ${ticket.name},</p>
@@ -119,7 +119,7 @@ exports.updateTicket = async (req, res) => {
             <p>${adminResponse}</p>
             <br>
             <p>If you have any further questions, feel free to reach out!</p>
-            <p>Best regards,<br>CineVerse Support Team</p>
+            <p>Best regards,<br>DivideCross Support Team</p>
           `
         });
       } catch (emailError) {

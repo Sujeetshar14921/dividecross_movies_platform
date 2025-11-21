@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaEnvelope, FaLock, FaShieldAlt, FaCheckCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
 import API from "../api/axios";
 
 export default function ResetPassword() {
@@ -19,16 +20,30 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    
     try {
       await API.post("/api/auth/verify-reset-otp", {
         email,
         otp,
         newPassword,
       });
-      alert("✅ Password reset successful!");
-      navigate("/login");
+      
+      toast.success("✅ Password reset successful! Redirecting to login...", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      
+      // Auto redirect after 2 seconds
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+      
     } catch (err) {
-      alert(err.response?.data?.message || "❌ Error resetting password");
+      const errorMessage = err.response?.data?.message || "❌ Invalid OTP or error resetting password";
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 4000,
+      });
     } finally {
       setLoading(false);
     }
@@ -36,16 +51,27 @@ export default function ResetPassword() {
 
   const handleResendOtp = async () => {
     if (!email) {
-      setMessage("Please enter your email to resend OTP.");
+      toast.warning("Please enter your email to resend OTP.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
       return;
     }
+    
     try {
       setResending(true);
       await API.post("/api/auth/request-reset-otp", { email });
-      setMessage("📩 New OTP sent to your email!");
-      setTimeout(() => setMessage(""), 3000);
+      
+      toast.success("📩 New OTP sent to your email!", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      
     } catch (err) {
-      setMessage("❌ Failed to resend OTP. Try again later.");
+      toast.error("❌ Failed to resend OTP. Try again later.", {
+        position: "top-center",
+        autoClose: 4000,
+      });
     } finally {
       setResending(false);
     }

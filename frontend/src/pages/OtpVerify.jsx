@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaShieldAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 import API from "../api/axios";
 
 export default function OtpVerify() {
@@ -17,15 +18,29 @@ export default function OtpVerify() {
   const handleVerify = async (e) => {
     e.preventDefault();
     setLoading(true);
+    
     try {
       await API.post("/api/auth/verify-otp", {
         email,
         otp,
       });
-      alert("✅ Email verified successfully!");
-      navigate("/login");
+      
+      toast.success("✅ Email verified successfully! Redirecting to login...", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      
+      // Auto redirect after 2 seconds
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+      
     } catch (err) {
-      alert(err.response?.data?.message || "❌ Invalid or expired OTP");
+      const errorMessage = err.response?.data?.message || "❌ Invalid or expired OTP";
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 4000,
+      });
     } finally {
       setLoading(false);
     }
@@ -37,10 +52,17 @@ export default function OtpVerify() {
       await API.post("/api/auth/register", {
         email,
       });
-      setMessage("📩 New OTP sent to your email!");
-      setTimeout(() => setMessage(""), 3000);
+      
+      toast.success("📩 New OTP sent to your email!", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      
     } catch (err) {
-      setMessage("❌ Failed to resend OTP.");
+      toast.error("❌ Failed to resend OTP.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
     } finally {
       setResending(false);
     }

@@ -30,12 +30,12 @@ const httpAgent = new http.Agent({
   family: 4
 });
 
-console.log(proxyUrl ? `🌐 Using proxy: ${proxyUrl}` : '🌐 Direct connection to TMDB');
+console.log(proxyUrl ? `Using proxy: ${proxyUrl}` : 'Direct connection to TMDB');
 
 // Robust axios instance with retry logic and extended timeout
 const api = axios.create({
   baseURL: TMDB_BASE_URL,
-  timeout: 30000, // 30 seconds for slow networks
+  timeout: 60000, // 60 seconds for slow/unreliable networks
   params: { api_key: TMDB_API_KEY },
   headers: {
     'Accept': 'application/json',
@@ -51,9 +51,9 @@ const api = axios.create({
 
 // Configure axios-retry for automatic retries
 axiosRetry(api, {
-  retries: 5, // More retries for unreliable networks
+  retries: 3, // Reduce retries to avoid excessive waiting
   retryDelay: (retryCount) => {
-    return retryCount * 2000; // 2s, 4s, 6s, 8s, 10s delay
+    return retryCount * 1000; // 1s, 2s, 3s delay
   },
   retryCondition: (error) => {
     // Retry on network errors, timeouts, and 5xx errors
@@ -66,7 +66,7 @@ axiosRetry(api, {
            (error.response && error.response.status >= 500);
   },
   onRetry: (retryCount, error, requestConfig) => {
-    console.log(`🔄 Retry attempt ${retryCount} for ${requestConfig.url}`);
+    console.log(`Retry attempt ${retryCount} for ${requestConfig.url}`);
   }
 });
 
@@ -77,12 +77,12 @@ async function fetchWithFallback(endpoint, params = {}) {
     const response = await api.get(endpoint, { params });
     return response.data;
   } catch (httpsError) {
-    console.log(`⚠️ HTTPS failed, trying HTTP fallback...`);
+    console.log(`HTTPS failed, trying HTTP fallback...`);
     try {
       // Fallback to HTTP
       const httpApi = axios.create({
         baseURL: 'http://api.themoviedb.org/3',
-        timeout: 30000,
+        timeout: 60000, // 60 seconds
         params: { api_key: TMDB_API_KEY },
         headers: {
           'Accept': 'application/json',
@@ -94,7 +94,7 @@ async function fetchWithFallback(endpoint, params = {}) {
       console.log(`✅ HTTP fallback successful`);
       return response.data;
     } catch (httpError) {
-      console.error(`❌ Both HTTPS and HTTP failed`);
+      console.error(`Both HTTPS and HTTP failed`);
       throw httpsError; // Throw original error
     }
   }
@@ -120,9 +120,9 @@ const formatMovie = (movie) => ({
 
 async function getPopularMovies(page = 1) {
   try {
-    console.log(`🎬 Fetching popular movies (page ${page}) from TMDB...`);
+    console.log(`Fetching popular movies (page ${page}) from TMDB...`);
     const data = await fetchWithFallback('/movie/popular', { page });
-    console.log(`✅ Successfully fetched ${data.results.length} popular movies`);
+    console.log(`Successfully fetched ${data.results.length} popular movies`);
     return {
       movies: data.results.map(formatMovie),
       page: data.page,
@@ -130,7 +130,7 @@ async function getPopularMovies(page = 1) {
       totalResults: data.total_results
     };
   } catch (error) {
-    console.error('❌ TMDB Popular Movies Error:', error.message);
+    console.error('TMDB Popular Movies Error:', error.message);
     if (error.code) console.error('   Error Code:', error.code);
     throw error;
   }
@@ -138,12 +138,12 @@ async function getPopularMovies(page = 1) {
 
 async function getTrendingMovies(timeWindow = 'week') {
   try {
-    console.log(`🎬 Fetching trending movies (${timeWindow})...`);
+    console.log(`Fetching trending movies (${timeWindow})...`);
     const data = await fetchWithFallback(`/trending/movie/${timeWindow}`);
-    console.log(`✅ Successfully fetched ${data.results.length} trending movies`);
+    console.log(`Successfully fetched ${data.results.length} trending movies`);
     return data.results.map(formatMovie);
   } catch (error) {
-    console.error('❌ TMDB Trending Error:', error.message);
+    console.error('TMDB Trending Error:', error.message);
     if (error.code) console.error('   Error Code:', error.code);
     throw error;
   }
@@ -151,9 +151,9 @@ async function getTrendingMovies(timeWindow = 'week') {
 
 async function getTopRatedMovies(page = 1) {
   try {
-    console.log(`🎬 Fetching top rated movies (page ${page})...`);
+    console.log(`Fetching top rated movies (page ${page})...`);
     const data = await fetchWithFallback('/movie/top_rated', { page });
-    console.log(`✅ Successfully fetched ${data.results.length} top rated movies`);
+    console.log(`Successfully fetched ${data.results.length} top rated movies`);
     return {
       movies: data.results.map(formatMovie),
       page: data.page,
@@ -168,9 +168,9 @@ async function getTopRatedMovies(page = 1) {
 
 async function getNowPlayingMovies(page = 1) {
   try {
-    console.log(`🎬 Fetching now playing movies (page ${page})...`);
+    console.log(`Fetching now playing movies (page ${page})...`);
     const data = await fetchWithFallback('/movie/now_playing', { page });
-    console.log(`✅ Successfully fetched ${data.results.length} now playing movies`);
+    console.log(`Successfully fetched ${data.results.length} now playing movies`);
     return {
       movies: data.results.map(formatMovie),
       page: data.page,
@@ -185,9 +185,9 @@ async function getNowPlayingMovies(page = 1) {
 
 async function getUpcomingMovies(page = 1) {
   try {
-    console.log(`🎬 Fetching upcoming movies (page ${page})...`);
+    console.log(`Fetching upcoming movies (page ${page})...`);
     const data = await fetchWithFallback('/movie/upcoming', { page });
-    console.log(`✅ Successfully fetched ${data.results.length} upcoming movies`);
+    console.log(`Successfully fetched ${data.results.length} upcoming movies`);
     return {
       movies: data.results.map(formatMovie),
       page: data.page,

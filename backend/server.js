@@ -48,9 +48,9 @@ app.use(
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log("✅ MongoDB Connected");
+    console.log("MongoDB Connected");
   })
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err.message));
+  .catch((err) => console.error("MongoDB Connection Error:", err.message));
 
 app.use("/api/tmdb", tmdbRoutes);
 app.use("/api/auth", authRoutes);
@@ -63,11 +63,11 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/support", supportRoutes);
 
 app.get("/", (req, res) => {
-  res.send("🎬 CineVerse Backend Running Successfully!");
+  res.send("DivideCross Backend Running Successfully!");
 });
 
 app.use((err, req, res, next) => {
-  console.error("🔥 Global Error:", err.stack);
+  console.error("Global Error:", err.stack);
   res.status(500).json({ message: "Something went wrong!", error: err.message });
 });
 
@@ -75,11 +75,11 @@ const PORT = process.env.PORT || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
-  console.log(`🚀 Server running on ${HOST}:${PORT}`);
-  console.log(`🎬 TMDb API ready - Direct fetching enabled`);
+  console.log(`Server running on ${HOST}:${PORT}`);
+  console.log(`TMDb API ready - Direct fetching enabled`);
   
   // Verify email configuration (non-blocking)
   verifyEmailConfig().catch(err => {
-    console.log('⚠️ Email verification skipped:', err.message);
+    console.log('Email verification skipped:', err.message);
   });
 });

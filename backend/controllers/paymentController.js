@@ -13,14 +13,14 @@ if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
       key_id: process.env.RAZORPAY_KEY_ID.trim(),
       key_secret: process.env.RAZORPAY_KEY_SECRET.trim(),
     });
-    console.log("✅ Razorpay initialized successfully");
+    console.log("Razorpay initialized successfully");
     console.log("   Key ID:", process.env.RAZORPAY_KEY_ID.trim().substring(0, 15) + "...");
   } catch (error) {
-    console.error("❌ Razorpay initialization failed:", error.message);
+    console.error("Razorpay initialization failed:", error.message);
     razorpay = null;
   }
 } else {
-  console.warn("⚠️  Razorpay keys not found - Payment features disabled");
+  console.warn("Razorpay keys not found - Payment features disabled");
   console.warn("   KEY_ID present:", !!process.env.RAZORPAY_KEY_ID);
   console.warn("   KEY_SECRET present:", !!process.env.RAZORPAY_KEY_SECRET);
 }

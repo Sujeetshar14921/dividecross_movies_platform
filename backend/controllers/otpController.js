@@ -45,8 +45,8 @@ exports.sendOtp = async (req, res) => {
 
     // Send OTP email
     const subject = purpose === "registration" 
-      ? "Verify your CineVerse account" 
-      : "CineVerse Password Reset OTP";
+      ? "Verify your DivideCross account" 
+      : "DivideCross Password Reset OTP";
 
     await sendOtpEmail(email, otp, subject);
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaEnvelope, FaArrowLeft, FaKey } from "react-icons/fa";
+import { toast } from "react-toastify";
 import API from "../api/axios";
 
 export default function ForgotPassword() {
@@ -12,12 +13,26 @@ export default function ForgotPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    
     try {
-      await API.post("/api/auth/request-reset-otp", { email });
-      alert("OTP sent to your email!");
-      navigate("/reset-password", { state: { email } });
+      const response = await API.post("/api/auth/request-reset-otp", { email });
+      
+      toast.success("✅ OTP sent successfully! Check your email.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      
+      // Auto redirect after 2 seconds
+      setTimeout(() => {
+        navigate("/reset-password", { state: { email } });
+      }, 2000);
+      
     } catch (err) {
-      alert(err.response?.data?.message || "Error sending OTP");
+      const errorMessage = err.response?.data?.message || "Failed to send OTP. Please try again.";
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 4000,
+      });
     } finally {
       setLoading(false);
     }

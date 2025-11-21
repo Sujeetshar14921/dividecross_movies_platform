@@ -12,12 +12,13 @@ const transporter = nodemailer.createTransport({
 });
 
 // Send OTP Email using Brevo + Nodemailer
-exports.sendOtpEmail = async (email, otp, subject = "Verify Your Email - CineVerse") => {
+exports.sendOtpEmail = async (email, otp, subject = "Verify Your Email - DivideCross") => {
   try {
-    console.log(`📧 Preparing to send OTP to: ${email}`);
+    console.log(`Preparing to send OTP to: ${email}`);
     
+    const senderEmail = process.env.SENDER_EMAIL || process.env.ADMIN_EMAIL || 'noreply@dividecross.com';
     const mailOptions = {
-      from: `"CineVerse Movies" <${process.env.BREVO_EMAIL}>`,
+      from: `"DivideCross Movies" <${senderEmail}>`,
       to: email,
       subject: subject,
       html: `
@@ -80,7 +81,7 @@ exports.sendOtpEmail = async (email, otp, subject = "Verify Your Email - CineVer
         <body>
           <div class="container">
             <div class="header">
-              <h1>🎬 CineVerse</h1>
+              <h1>DivideCross</h1>
               <p>Your Movie Streaming Platform</p>
             </div>
             
@@ -92,27 +93,27 @@ exports.sendOtpEmail = async (email, otp, subject = "Verify Your Email - CineVer
             
             <div class="info">
               <p>Hello,</p>
-              <p>You've requested to verify your account on CineVerse. Please use the OTP code above to complete your verification.</p>
+              <p>You've requested to verify your account on DivideCross. Please use the OTP code above to complete your verification.</p>
               <p><strong>Important:</strong> This code will expire in 5 minutes. Do not share this code with anyone.</p>
               <p>If you didn't request this code, please ignore this email.</p>
             </div>
             
             <div class="footer">
-              <p>© 2025 CineVerse. All rights reserved.</p>
+              <p>© 2025 DivideCross. All rights reserved.</p>
               <p>This is an automated message, please do not reply.</p>
             </div>
           </div>
         </body>
         </html>
       `,
-      text: `CineVerse - Your OTP code is: ${otp}. This code is valid for 5 minutes. If you didn't request this, please ignore this message.`,
+      text: `DivideCross - Your OTP code is: ${otp}. This code is valid for 5 minutes. If you didn't request this, please ignore this message.`,
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent successfully! Message ID: ${info.messageId}`);
+    console.log(`Email sent successfully! Message ID: ${info.messageId}`);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error(`❌ Email send error: ${error.message}`);
+    console.error(`Email send error: ${error.message}`);
     throw new Error(`Failed to send email: ${error.message}`);
   }
 };

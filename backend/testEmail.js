@@ -31,10 +31,11 @@ async function testEmail() {
 
     console.log(`📨 Sending test OTP email to: ${testEmail}`);
     
+    const senderEmail = process.env.SENDER_EMAIL || process.env.ADMIN_EMAIL || 'test@dividecross.com';
     const mailOptions = {
-      from: `"CineVerse Test" <${process.env.BREVO_EMAIL}>`,
+      from: `"DivideCross Test" <${senderEmail}>`,
       to: testEmail,
-      subject: "Test OTP - CineVerse",
+      subject: "Test OTP - DivideCross",
       html: `
         <!DOCTYPE html>
         <html>
@@ -78,7 +79,7 @@ async function testEmail() {
         <body>
           <div class="container">
             <div class="header">
-              <h1>🎬 CineVerse</h1>
+              <h1>DivideCross</h1>
               <p>Test Email - OTP Verification</p>
             </div>
             <div class="otp-box">
@@ -94,7 +95,7 @@ async function testEmail() {
         </body>
         </html>
       `,
-      text: `CineVerse Test - Your test OTP code is: ${testOtp}`,
+      text: `DivideCross Test - Your test OTP code is: ${testOtp}`,
     };
 
     const info = await transporter.sendMail(mailOptions);

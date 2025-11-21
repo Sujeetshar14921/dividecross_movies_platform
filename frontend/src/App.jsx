@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
@@ -27,9 +27,17 @@ export default function App() {
   return (
     <div className="min-h-screen bg-cinebg text-white">
       <Navbar />
-      <Routes>
-        {/* Protected Routes - Login required */}
-        <Route
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+            <p className="mt-4 text-gray-400">Loading...</p>
+          </div>
+        </div>
+      }>
+        <Routes>
+          {/* Protected Routes - Login required */}
+          <Route
           path="/"
           element={
             <ProtectedRoute>
@@ -158,6 +166,7 @@ export default function App() {
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+      </Suspense>
 
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
